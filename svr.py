@@ -59,6 +59,10 @@ def token_exchange():
 
   return 'Failed'
 
+@app.route('/mysegmenttimes/<userid>/<segment>')
+def my_segment_times(userid, segment):
+  return render_template('mytimes.html')
+
 if __name__ == '__main__':
 #  createswitchworkers()
   redisclient('localhost', 6379)
