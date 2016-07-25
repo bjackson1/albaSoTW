@@ -1,0 +1,122 @@
+---
+redis:
+  api_token: 'dea9ce42f79760b6da5efaace69b87980e3b0c89'
+  sotw: 2138646
+  members:
+    1338208:
+      firstname: 'Brett'
+      lastname: 'J ARCC'
+      sex: 'M'
+      token: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+      clubs: "[{'name': 'Club1'}, {'name': 'Club2'}]"
+
+    373497:
+      firstname: 'Athlete'
+      lastname: '373497'
+      sex: 'M'
+      token: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+      clubs: "[{'name': 'Club1'}, {'name': 'Club2'}]"
+
+    1300117:
+      firstname: 'Athlete'
+      lastname: '1300117'
+      sex: 'M'
+      token: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+      clubs: "[{'name': 'Club1'}, {'name': 'Club2'}]"
+
+    8258018:
+      firstname: 'Athlete'
+      lastname: '8258018'
+      sex: 'M'
+      token: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+      clubs: "[{'name': 'Club1'}, {'name': 'Club2'}]"
+
+    7385514:
+      firstname: 'Athlete'
+      lastname: '7385514'
+      sex: 'M'
+      token: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+      clubs: "[{'name': 'Club1'}, {'name': 'Club2'}]"
+
+    763275:
+      firstname: 'Athlete'
+      lastname: '763275'
+      sex: 'M'
+      token: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+      clubs: "[{'name': 'Club1'}, {'name': 'Club2'}]"
+
+    10159698:
+      firstname: 'Athlete'
+      lastname: '10159698'
+      sex: 'M'
+      token: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+      clubs: "[{'name': 'Club1'}, {'name': 'Club2'}]"
+
+    5718325:
+      firstname: 'Athlete'
+      lastname: '5718325'
+      sex: 'M'
+      token: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+      clubs: "[{'name': 'Club1'}, {'name': 'Club2'}]"
+
+    376117:
+      firstname: 'Athlete'
+      lastname: '376117'
+      sex: 'M'
+      token: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+      clubs: "[{'name': 'Club1'}, {'name': 'Club2'}]"
+
+    1049610:
+      firstname: 'Athlete'
+      lastname: '1049610'
+      sex: 'M'
+      token: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+      clubs: "[{'name': 'Club1'}, {'name': 'Club2'}]"
+
+    1576483:
+      firstname: 'Athlete'
+      lastname: '1576483'
+      sex: 'M'
+      token: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+      clubs: "[{'name': 'Club1'}, {'name': 'Club2'}]"
+
+    8606798:
+      firstname: 'Athlete'
+      lastname: '8606798'
+      sex: 'M'
+      token: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+      clubs: "[{'name': 'Club1'}, {'name': 'Club2'}]"
+
+  divisions:
+    div1:
+      name: 'Division 1'
+      members:
+        - 1338208
+        - 10000006
+        - 10000005
+        - 10000004
+    botr:
+      name: 'Best of the Rest'
+      members:
+        - 338208
+        - 373497
+        - 1300117
+        - 8258018
+        - 7385514
+        - 763275
+        - 10159698
+        - 5718325
+        - 376117
+        - 1049610
+        - 1576483
+        - 8606798
+  efforts: >
+    [
+      {"id": 1000000101, "elapsed_time": 101, "activity": {"id": 1000000101}, "athlete": {"id": 10000001}},
+      {"id": 1000000101, "elapsed_time": 110, "activity": {"id": 1000000101}, "athlete": {"id": 10000001}},
+      {"id": 1000000201, "elapsed_time": 101, "activity": {"id": 1000000201}, "athlete": {"id": 10000002}},
+      {"id": 1000000301, "elapsed_time": 150, "activity": {"id": 1000000301}, "athlete": {"id": 10000003}},
+      {"id": 1000000401, "elapsed_time": 145, "activity": {"id": 1000000401}, "athlete": {"id": 10000004}},
+      {"id": 1000000102, "elapsed_time": 102, "activity": {"id": 1000000102}, "athlete": {"id": 10000001}}
+    ]
+

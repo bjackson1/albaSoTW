@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<script>
+    function addathlete()
+    {
+        var newSoTW = document.getElementById('segment').value;
+
+        if (newSoTW.length >= 3 && !isNaN(newSoTW))
+        {
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open( "GET", window.location.href + '/' + newSoTW, false ); // false for synchronous request
+            xmlHttp.send( null );
+            alert(xmlHttp.responseText);
+        }
+        else
+        {
+            alert('You must submit a valid Strava segment number');
+        }
+    }
+</script>
+<body>
+
+Athlete id: <input type="text" id="athlete" />
+<select id="division">
+    <option value="div1">Division 1</option>
+    <option value="div2">Division 2</option>
+    <option value="div3">Division 3</option>
+</select>
+<button onclick="addathlete()" label="Set">Set</button>
+
+<!-- {{ divisions }} -->
+
+<h1>Existing Athletes</h1>
+{% for division in divisions %}
+<h2>{{ divisions[division].name }}</h2>
+<table>
+    <tr>
+        <td>Name</td>
+        <td>ID</td>
+    </tr>
+    {% for member in divisions[division].members %}
+        <tr>
+            <td>{{ member }}</td>
+            <td></td>
+        </tr>
+    {% endfor %}
+</table>
+{% endfor %}
+</body>
+</html>

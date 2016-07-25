@@ -4,9 +4,42 @@
 
 <body>
     
-    <a href="https://www.strava.com/oauth/authorize?client_id=410&response_type=code&redirect_uri=http://212.159.46.52:5000/exchange&state={{ state }}">
-        <img src="static/ConnectWithStrava.png" />
-    </a>
+<!-- {{ leagues }} -->
+
+    {% for league in leagues %}
+        <h1>{{ league }}</h1>
+        <table border="1" cellpadding="8" cellspacing="0">
+            <tr>
+                <td>Rank</td>
+                <td>Points</td>
+                <td>Name</td>
+                <td>Effort ID</td>
+                <td>Activity ID</td>
+                <td>Athlete ID</td>
+                <td>Time</td>
+                <td>Heart Rate</td>
+                <td>Start Date/Time</td>
+                <td>Average Watts</td>
+            </tr>
+
+            {% for athlete_id, result in leagues[league].items() %}
+                <tr> 
+                    <td>{{ result.rank }}</td>
+                    <td>{{ result.points }}</td>
+                    <td><a href="https://www.strava.com/athletes/{{ result.athlete.id }}">{{ result.firstname }} {{ result.lastname }}</a></td> 
+                    <td><a href="https://www.strava.com/activities/{{ result.activity.id }}#{{ result.id }}">{{ result.id }}</a></td> 
+                    <td><a href="https://www.strava.com/activities/{{ result.activity.id }}">{{ result.activity.id }}</a></td>
+                     <td>{{ result.athlete.id }}</td> 
+                    <td>{{ result.elapsed_time_formatted }}</td> 
+                    <td>{{ result.average_heartrate }}</td>
+                     <td>{{ result.start_time_formatted }}</td>
+                     <td>{{ result.average_watts }}</td> 
+                </tr>
+            {% endfor %}
+
+        </table>
+    {% endfor %}
 
 </body>
 </html>
+
