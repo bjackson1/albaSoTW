@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="84f8bd39-ffdb-4db9-84cb-f82ca30e2971" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/athlete.py" afterPath="$PROJECT_DIR$/athlete.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/default.css" afterPath="$PROJECT_DIR$/static/default.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/efforts.html" afterPath="$PROJECT_DIR$/templates/efforts.html" />
     </list>
     <ignored path="albaSoTW.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -26,8 +27,8 @@
       <file leaf-file-name="svr.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/svr.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="352">
-              <caret line="97" column="0" selection-start-line="97" selection-start-column="0" selection-end-line="97" selection-end-column="0" />
+            <state relative-caret-position="592">
+              <caret line="179" column="22" selection-start-line="179" selection-start-column="22" selection-end-line="179" selection-end-column="22" />
               <folding>
                 <element signature="e#1190#1213#0" expanded="true" />
               </folding>
@@ -68,8 +69,8 @@
       <file leaf-file-name="default.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/default.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="42">
-              <caret line="73" column="1" selection-start-line="73" selection-start-column="1" selection-end-line="73" selection-end-column="1" />
+            <state relative-caret-position="218">
+              <caret line="36" column="16" selection-start-line="36" selection-start-column="16" selection-end-line="36" selection-end-column="16" />
               <folding />
             </state>
           </provider>
@@ -109,7 +110,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="athlete.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="athlete.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/athlete.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="176">
@@ -121,11 +122,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="efforts.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="efforts.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/efforts.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="368">
-              <caret line="29" column="24" selection-start-line="29" selection-start-column="24" selection-end-line="29" selection-end-column="90" />
+            <state relative-caret-position="681">
+              <caret line="48" column="0" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -169,13 +170,13 @@
         <option value="$PROJECT_DIR$/load_data.py" />
         <option value="$PROJECT_DIR$/svr.py" />
         <option value="$PROJECT_DIR$/static/admin.js" />
-        <option value="$PROJECT_DIR$/templates/efforts.html" />
         <option value="$PROJECT_DIR$/templates/admin.html" />
         <option value="$PROJECT_DIR$/requirements.txt" />
         <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/static/default.css" />
         <option value="$PROJECT_DIR$/division.py" />
         <option value="$PROJECT_DIR$/athlete.py" />
+        <option value="$PROJECT_DIR$/static/default.css" />
+        <option value="$PROJECT_DIR$/templates/efforts.html" />
       </list>
     </option>
   </component>
@@ -655,6 +656,11 @@
           <line>97</line>
           <option name="timeStamp" value="149" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/svr.py</url>
+          <line>192</line>
+          <option name="timeStamp" value="152" />
+        </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
@@ -666,7 +672,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="151" />
+      <option name="time" value="153" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="tests">
@@ -972,14 +978,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/efforts.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="368">
-          <caret line="29" column="24" selection-start-line="29" selection-start-column="24" selection-end-line="29" selection-end-column="90" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/admin.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="265">
@@ -1014,24 +1012,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/default.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="42">
-          <caret line="73" column="1" selection-start-line="73" selection-start-column="1" selection-end-line="73" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/svr.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="97" column="0" selection-start-line="97" selection-start-column="0" selection-end-line="97" selection-end-column="0" />
-          <folding>
-            <element signature="e#1190#1213#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/division.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="208">
@@ -1049,6 +1029,32 @@
           <folding>
             <element signature="e#0#25#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/default.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="218">
+          <caret line="36" column="16" selection-start-line="36" selection-start-column="16" selection-end-line="36" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/svr.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="592">
+          <caret line="179" column="22" selection-start-line="179" selection-start-column="22" selection-end-line="179" selection-end-column="22" />
+          <folding>
+            <element signature="e#1190#1213#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/efforts.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="681">
+          <caret line="48" column="0" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>

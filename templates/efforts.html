@@ -27,7 +27,7 @@
                 <tr> 
                     <td>{{ result.rank }}</td>
                     <td>{{ result.points }}</td>
-                    <td><a href="https://www.strava.com/athletes/{{ result.athlete.id }}">{{ result.firstname }} {{ result.lastname }}</a></td> 
+                    <td><a href="https://www.strava.com/athletes/{{ result.athlete.id }}">{{ result.athlete['firstname'] }} {{ result.athlete['lastname'] }}</a></td> 
                     <td><a href="https://www.strava.com/activities/{{ result.activity.id }}#{{ result.id }}">{{ result.id }}</a></td> 
                     <td><a href="https://www.strava.com/activities/{{ result.activity.id }}">{{ result.activity.id }}</a></td>
                      <td>{{ result.athlete.id }}</td> 
