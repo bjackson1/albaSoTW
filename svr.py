@@ -81,24 +81,32 @@ def setsotw(sotw):
     redisclient.set('sotw', sotw)
     return "SoTW set to %s" % sotw
 
-@app.route('/addathlete')
+@app.route('/admin')
 def addathletepage():
-    divisions = Division.get_all()
+    divisions = Division.get_all(True)
 
-    return render_template('addathlete.html', divisions=divisions)
+    return render_template('admin.html', divisions=divisions)
+
+@app.route('/removeathlete/<athlete_id>')
+def removeathlete(athlete_id):
+    Division.remove_athlete_from_all_divisions(athlete_id)
+
+    return "OK"
 
 @app.route('/addathlete/<athlete_id>/<division>')
 def addathlete(athlete_id, division):
-    Division(division).add_athlete(athlete_id)
+    if Division(division).add_athlete(athlete_id):
+        athlete = Athlete(athlete_id)
 
-    return "Athlete %s added to division %s" % (athlete_id, division)
+        return json.dumps(athlete.get())
+    else:
+        return 'Incorrect gender for Division'
 
-
-@app.route('/loadintdata')
-def loadintdata():
+@app.route('/loaddata/<dataset>')
+def loadintdata(dataset):
     from load_data import loader
 
-    loader().setupTestData('integration_data.yml')
+    loader().setupTestData('%s_data.yml' % dataset)
 
     return "OK"
 
@@ -107,7 +115,7 @@ def loadintdata():
 def efforts():
     leagues=compile_efforts()
 
-    return render_template('mytimes.html', leagues=leagues)
+    return render_template('efforts.html', leagues=leagues)
 
 
 def compile_efforts():
@@ -122,7 +130,7 @@ def compile_efforts():
 
     effort_list = Strava().get_efforts(segment, starttime, endtime)
 
-    divisions = redisclient.getlist('divisions')
+    divisions = redisclient.smembers('divisions')
 
     for divisionId in divisions:
         division = divisionId
@@ -133,7 +141,7 @@ def compile_efforts():
 
 
 def compile_league(league_name, effort_list):
-    members = redisclient.getlist(league_name + '_members')
+    members = redisclient.smembers(league_name + '_members')
     times = []
     efforts = {}
 
@@ -186,7 +194,7 @@ def compile_league(league_name, effort_list):
 
 
 def init():
-    redisclient('192.168.1.2', 6379)
+    redisclient('localhost', 6379)
     config = loadconfig()
     print("Config loaded")
 

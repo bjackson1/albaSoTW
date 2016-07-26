@@ -52,3 +52,7 @@ class redisclient:
 
     def smembers(key):
         return redisclient.__redisconnection.smembers(key)
+
+    def srem(key, value):
+        redisclient.__redisconnection.srem(key, value)
+

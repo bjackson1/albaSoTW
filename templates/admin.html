@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<script src="/static/admin.js"></script>
+<body>
+
+
+<h1>Segment of the Week</h1>
+SoTW Strava segment id: <input type="text" id="segment" /> <button onclick="setsotw()" label="Set">Set</button>
+<div id="add_sotw_status"></div>
+
+
+<h1>Add Athlete</h1>
+Athlete id: <input type="text" id="athlete" />
+<select id="division">
+    {% for division in divisions|sort() %}
+        <option value="{{ division }}">{{ divisions[division].name }}</option>
+    {% endfor %}
+</select>
+<button onclick="addathlete()" label="Set">Set</button>
+<div id="add_athlete_status"></div>
+
+<!-- {{ divisions }} -->
+
+<h1>Existing Athletes</h1>
+{% for division in divisions|sort() %}
+<h2>{{ divisions[division].name }}</h2>
+<table id="{{ division }}" border="1" cellpadding="8" cellspacing="0">
+    <tr>
+        <td>Name</td>
+        <td>ID</td>
+        <td>Actions</td>
+    </tr>
+    {% for member in divisions[division].members %}
+        <tr id="{{ member }}_row">
+            <td>{{ divisions[division].members[member].firstname }} {{ divisions[division].members[member].lastname }}</td>
+            <td>{{ member }}</td>
+            <td><button onclick="removeathlete('{{ member }}')">Remove</button></td>
+        </tr>
+    {% endfor %}
+</table>
+{% endfor %}
+</body>
+</html>

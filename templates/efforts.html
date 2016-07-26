@@ -6,7 +6,7 @@
     
 <!-- {{ leagues }} -->
 
-    {% for league in leagues %}
+    {% for league in leagues|sort() %}
         <h1>{{ league }}</h1>
         <table border="1" cellpadding="8" cellspacing="0">
             <tr>
@@ -40,6 +40,8 @@
         </table>
     {% endfor %}
 
+<br /><br />
+<a href="/admin">Admin</a>
 </body>
 </html>
 

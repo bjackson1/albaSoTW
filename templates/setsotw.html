@@ -1,22 +1,7 @@
 <!DOCTYPE html>
 <html>
 <script>
-    function setsotw()
-    {
-        var newSoTW = document.getElementById('segment').value;
 
-        if (newSoTW.length >= 3 && !isNaN(newSoTW))
-        {
-            var xmlHttp = new XMLHttpRequest();
-            xmlHttp.open( "GET", window.location.href + '/' + newSoTW, false ); // false for synchronous request
-            xmlHttp.send( null );
-            alert(xmlHttp.responseText);
-        }
-        else
-        {
-            alert('You must submit a valid Strava segment number');
-        }
-    }
 </script>
 <body>
 

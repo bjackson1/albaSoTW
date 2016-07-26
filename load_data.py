@@ -13,17 +13,18 @@ class loader:
 
 
     def setupTestData(self, file):
-        redisclient('192.168.1.2', 6379)
+        redisclient('localhost', 6379)
         config = self.loadconfig(file)['redis']
 
         redisclient.set('api_token', config['api_token'])
         redisclient.set('sotw', config['sotw'])
 
-        for member in config['members']:
-            member_data = config['members'][member]
+        if 'members' in config:
+            for member in config['members']:
+                member_data = config['members'][member]
 
-            for key, value in member_data.items():
-                redisclient.hset(member, key, value)
+                for key, value in member_data.items():
+                    redisclient.hset(member, key, value)
 
         try:
             redisclient.delete('divisions')
@@ -35,16 +36,19 @@ class loader:
 
             redisclient.sadd('divisions', division)
             redisclient.hset(division, 'name', division_data['name'])
+            redisclient.hset(division, 'sex', division_data['sex'])
 
             try:
                 redisclient.delete(division + '_members')
             except Exception as e:
                 print(e)
 
-            for value in division_data['members']:
-                redisclient.sadd(division + '_members', value)
+            if 'members' in division_data:
+                for value in division_data['members']:
+                    redisclient.sadd(division + '_members', value)
 
-        config['loaded_efforts'] = json.loads(config['efforts'])
+        if config['efforts']:
+            config['loaded_efforts'] = json.loads(config['efforts'])
 
         return config
 
