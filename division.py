@@ -15,13 +15,11 @@ class Division:
     def add_athlete(self, athlete_id):
         athlete = Athlete(athlete_id).get()
 
-        if athlete['sex'] == self.division_object['sex'] or athlete['sex'] == 'None':
-            Division.remove_athlete_from_all_divisions(athlete_id)
-            redisclient.sadd('%s_members' % self.division_id, athlete_id)
+        # if 'sex' not in athlete and (athlete['sex'] == self.division_object['sex'] or athlete['sex'] == 'None'):
+        Division.remove_athlete_from_all_divisions(athlete_id)
+        redisclient.sadd('%s_members' % self.division_id, athlete_id)
 
-            return True
-        else:
-            return False
+        return True
 
     @staticmethod
     def remove_athlete_from_division(division_id, athlete_id):

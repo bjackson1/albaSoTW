@@ -27,13 +27,14 @@ tr, td {
     border-bottom: 1px;
     border-top: 1px;
     text-align: left;
+    font-size: 14px;
 }
 
 th {
     background-color: black;
     color: white;
     font-weight: bold;
-    min-width: 100px;
+    min-width: 200px;
     border: 0px;
 }
 
@@ -42,7 +43,7 @@ td {
 }
 
 tr:hover {
-    background-color: #fff0f7;
+    background-color: #fff7fd;
 }
 
 input[type=text], select {
@@ -58,7 +59,7 @@ input[type=text], select {
 
 button {
     width: 80px;
-    background-color: deeppink; /*#4CAF50;*/
+    background-color:  #e62a86; /*#4CAF50;*/
     color: white;
     padding: 14px 20px;
     margin: 8px 0;
@@ -69,7 +70,7 @@ button {
 }
 
 button:hover {
-    background-color: Fuchsia;
+    background-color: #c6176d;
 }
 
 .status_message {
