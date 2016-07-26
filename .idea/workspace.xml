@@ -2,19 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="84f8bd39-ffdb-4db9-84cb-f82ca30e2971" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/admin.js" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/templates/addathlete.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/templates/mytimes.html" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/albaSoTW.iml" afterPath="$PROJECT_DIR$/.idea/albaSoTW.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/production_data.yml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/athlete.py" afterPath="$PROJECT_DIR$/athlete.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/division.py" afterPath="$PROJECT_DIR$/division.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/load_data.py" afterPath="$PROJECT_DIR$/load_data.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/storage.py" afterPath="$PROJECT_DIR$/storage.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/svr.py" afterPath="$PROJECT_DIR$/svr.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/setsotw.html" afterPath="$PROJECT_DIR$/templates/setsotw.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests_division.py" afterPath="$PROJECT_DIR$/tests_division.py" />
     </list>
     <ignored path="albaSoTW.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -67,10 +57,20 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="80">
+              <caret line="5" column="9" selection-start-line="5" selection-start-column="9" selection-end-line="5" selection-end-column="9" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="admin.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/admin.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="96">
+            <state relative-caret-position="112">
               <caret line="7" column="26" selection-start-line="7" selection-start-column="26" selection-end-line="7" selection-end-column="26" />
               <folding />
             </state>
@@ -93,18 +93,6 @@
             <state relative-caret-position="288">
               <caret line="35" column="0" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="tests_division.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tests_division.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="48">
-              <caret line="3" column="29" selection-start-line="3" selection-start-column="29" selection-end-line="3" selection-end-column="29" />
-              <folding>
-                <element signature="e#0#15#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -133,10 +121,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="efforts.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="efforts.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/efforts.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="672">
+            <state relative-caret-position="393">
               <caret line="42" column="12" selection-start-line="42" selection-start-column="12" selection-end-line="42" selection-end-column="12" />
               <folding />
             </state>
@@ -185,6 +173,7 @@
         <option value="$PROJECT_DIR$/athlete.py" />
         <option value="$PROJECT_DIR$/static/admin.js" />
         <option value="$PROJECT_DIR$/templates/efforts.html" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -845,13 +834,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/svr_tests.py" />
     <entry file="file:///Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5/unittest/suite.py" />
     <entry file="file://$PROJECT_DIR$/load_integration_data.py" />
@@ -1043,6 +1025,22 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/templates/efforts.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="393">
+          <caret line="42" column="12" selection-start-line="42" selection-start-column="12" selection-end-line="42" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/admin.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="112">
+          <caret line="7" column="26" selection-start-line="7" selection-start-column="26" selection-end-line="7" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/templates/admin.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="384">
@@ -1051,18 +1049,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/admin.js">
+    <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="7" column="26" selection-start-line="7" selection-start-column="26" selection-end-line="7" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/efforts.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="672">
-          <caret line="42" column="12" selection-start-line="42" selection-start-column="12" selection-end-line="42" selection-end-column="12" />
+        <state relative-caret-position="80">
+          <caret line="5" column="9" selection-start-line="5" selection-start-column="9" selection-end-line="5" selection-end-column="9" />
           <folding />
         </state>
       </provider>

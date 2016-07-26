@@ -1,0 +1,23 @@
+---
+redis:
+  api_token: 'dea9ce42f79760b6da5efaace69b87980e3b0c89'
+  sotw: 2138646
+  divisions:
+    mdiv1:
+      name: 'Men''s Division 1'
+      sex: M
+    mdiv2:
+      name: 'Men''s Division 2'
+      sex: M
+    mdiv3:
+      name: 'Men''s Division 3'
+      sex: M
+    mdiv4:
+      name: 'Men''s Division 4'
+      sex: M
+    ldiv:
+      name: 'Ladies'
+      sex: F
+  efforts:
+
+
