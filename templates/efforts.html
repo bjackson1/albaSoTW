@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
-<title>My Segment Times</title>
+<title>Segment Efforts</title>
+<link rel="stylesheet" href="./static/default.css" type="text/css"/>
 
 <body>
     
@@ -10,16 +11,16 @@
         <h1>{{ league }}</h1>
         <table border="1" cellpadding="8" cellspacing="0">
             <tr>
-                <td>Rank</td>
-                <td>Points</td>
-                <td>Name</td>
-                <td>Effort ID</td>
-                <td>Activity ID</td>
-                <td>Athlete ID</td>
-                <td>Time</td>
-                <td>Heart Rate</td>
-                <td>Start Date/Time</td>
-                <td>Average Watts</td>
+                <th>Rank</th>
+                <th>Points</th>
+                <th>Name</th>
+                <th>Effort ID</th>
+                <th>Activity ID</th>
+                <th>Athlete ID</th>
+                <th>Time</th>
+                <th>Heart Rate</th>
+                <th>Start Date/Time</th>
+                <th>Average Watts</th>
             </tr>
 
             {% for athlete_id, result in leagues[league].items() %}

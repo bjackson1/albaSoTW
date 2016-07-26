@@ -1,23 +1,30 @@
 <!DOCTYPE html>
 <html>
 <script src="/static/admin.js"></script>
+<link rel="stylesheet" href="./static/default.css" type="text/css"/>
 <body>
 
+<div class="headerbar">SoTW Admin Page</div>
 
 <h1>Segment of the Week</h1>
-SoTW Strava segment id: <input type="text" id="segment" /> <button onclick="setsotw()" label="Set">Set</button>
-<div id="add_sotw_status"></div>
+<div id="set_sotw_control">
+    SoTW Strava segment id: <input type="text" id="segment" /> <button onclick="setsotw()" label="Set">Set</button>
+    <div id="add_sotw_status" class="status_message"></div>
+</div>
 
 
 <h1>Add Athlete</h1>
-Athlete id: <input type="text" id="athlete" />
-<select id="division">
-    {% for division in divisions|sort() %}
-        <option value="{{ division }}">{{ divisions[division].name }}</option>
-    {% endfor %}
-</select>
-<button onclick="addathlete()" label="Set">Set</button>
-<div id="add_athlete_status"></div>
+<div id="add_athlete_control">
+    Athlete id: <input type="text" id="athlete" />
+    <select id="division">
+        {% for division in divisions|sort() %}
+            <option value="{{ division }}">{{ divisions[division].name }}</option>
+        {% endfor %}
+    </select>
+    <button onclick="addathlete()" label="Set">Set</button>
+    <div id="add_athlete_status" class="status_message"></div>
+</div>
+
 
 <!-- {{ divisions }} -->
 
@@ -25,19 +32,21 @@ Athlete id: <input type="text" id="athlete" />
 {% for division in divisions|sort() %}
 <h2>{{ divisions[division].name }}</h2>
 <table id="{{ division }}" border="1" cellpadding="8" cellspacing="0">
-    <tr>
-        <td>Name</td>
-        <td>ID</td>
-        <td>Actions</td>
+    <tr class="table_head">
+        <th>Name</th>
+        <th>ID</th>
+        <th>Actions</th>
     </tr>
     {% for member in divisions[division].members %}
         <tr id="{{ member }}_row">
-            <td>{{ divisions[division].members[member].firstname }} {{ divisions[division].members[member].lastname }}</td>
+            <td><a href="https://www.strava.com/athletes/{{ member }}">{{ divisions[division].members[member].firstname }} {{ divisions[division].members[member].lastname }}</a></td>
             <td>{{ member }}</td>
-            <td><button onclick="removeathlete('{{ member }}')">Remove</button></td>
+            <td><button onclick="removeathlete('{{ member }}')" class="table_button">Remove</button></td>
         </tr>
     {% endfor %}
 </table>
 {% endfor %}
+
+
 </body>
 </html>
