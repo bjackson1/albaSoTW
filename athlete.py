@@ -12,12 +12,13 @@ class Athlete:
             self.set_in_redis()
             self.get_from_redis()
 
+        self.athlete_object['id'] = self.athlete_id
+
     def get(self):
         return self.athlete_object
 
     def get_from_redis(self):
         self.athlete_object = redisclient.hgetall(self.athlete_id)
-        self.athlete_object['id'] = self.athlete_id
 
     def get_from_strava(self):
         self.athlete_object = Strava().get_athlete(self.athlete_id)
