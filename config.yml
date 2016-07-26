@@ -1,4 +1,5 @@
 ---
+redis: 192.168.1.2
 leagues:
     div1:
       name: 'Division 1'

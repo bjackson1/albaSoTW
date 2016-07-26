@@ -13,7 +13,7 @@ class loader:
 
 
     def setupTestData(self, file):
-        redisclient('localhost', 6379)
+        redisclient('192.168.1.2', 6379)
         config = self.loadconfig(file)['redis']
 
         redisclient.set('api_token', config['api_token'])

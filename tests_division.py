@@ -5,7 +5,7 @@ from division import Division
 import mock
 
 
-class tests_Athlete(unittest.TestCase):
+class tests_Division(unittest.TestCase):
     test_data = None
 
     def setupTestData(self):

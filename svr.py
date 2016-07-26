@@ -91,7 +91,7 @@ def addathletepage():
 def addathlete(athlete_id, division):
     Division(division).add_athlete(athlete_id)
 
-    return "Athlete %s added to division %s" % (athlete_id)
+    return "Athlete %s added to division %s" % (athlete_id, division)
 
 
 @app.route('/loadintdata')
@@ -186,7 +186,7 @@ def compile_league(league_name, effort_list):
 
 
 def init():
-    redisclient('localhost', 6379)
+    redisclient('192.168.1.2', 6379)
     config = loadconfig()
     print("Config loaded")
 

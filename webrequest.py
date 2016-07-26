@@ -12,13 +12,17 @@ def getfromurl(url):
 
   return ret
 
-def getjsonfromurl(uri, parameters, token):
-    authz = 'Bearer ' + token
+def getjsonfromurl(uri, parameters=None, token=None):
+    full_uri = uri
 
-    full_uri = uri + '?' + urllib.parse.urlencode(parameters)
+    if parameters:
+        full_uri = uri + '?' + urllib.parse.urlencode(parameters)
 
     req = urllib.request.Request(full_uri)
-    req.add_header('Authorization', authz)
+
+    if token:
+        authz = 'Bearer ' + token
+        req.add_header('Authorization', authz)
 
     with closing(urlopen(req)) as response:
         data = json.loads(response.read().decode())

@@ -3,12 +3,13 @@
 <script>
     function addathlete()
     {
-        var newSoTW = document.getElementById('segment').value;
+        var athlete = document.getElementById('athlete').value;
+        var division = document.getElementById('division').value;
 
-        if (newSoTW.length >= 3 && !isNaN(newSoTW))
+        if (athlete.length >= 3 && !isNaN(athlete))
         {
             var xmlHttp = new XMLHttpRequest();
-            xmlHttp.open( "GET", window.location.href + '/' + newSoTW, false ); // false for synchronous request
+            xmlHttp.open( "GET", window.location.href + '/' + athlete + '/' + division, false ); // false for synchronous request
             xmlHttp.send( null );
             alert(xmlHttp.responseText);
         }
