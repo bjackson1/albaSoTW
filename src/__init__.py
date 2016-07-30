@@ -79,7 +79,7 @@ def callback_handling():
   token_payload = {
     'client_id':     'f9dF4rSZNvgJhiRe1EFJsg1ymJlmih2k',
     'client_secret': '8_Qh1mXIddjq49PANkJOEHhJC_4jA9ewsO4Y7IXhdFoSwg-bJgdYwDBsMb5JCQDD',
-    'redirect_uri':  'http://212.159.46.52:5000/callback',
+    'redirect_uri':  'http://az-bcj-01.cloudapp.net/callback',
     'code':          code,
     'grant_type':    'authorization_code'
   }
