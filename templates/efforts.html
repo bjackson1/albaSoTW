@@ -1,48 +1,0 @@
-<!DOCTYPE html>
-<html>
-<title>Segment Efforts</title>
-<link rel="stylesheet" href="./static/default.css" type="text/css"/>
-
-<body>
-    
-<!-- {{ leagues }} -->
-
-    {% for league in leagues|sort() %}
-        <h1>{{ league }}</h1>
-        <table border="1" cellpadding="8" cellspacing="0">
-            <tr>
-                <th>Rank</th>
-                <th>Points</th>
-                <th>Name</th>
-                <th>Effort ID</th>
-                <th>Activity ID</th>
-                <th>Athlete ID</th>
-                <th>Time</th>
-                <th>Heart Rate</th>
-                <th>Start Date/Time</th>
-                <th>Average Watts</th>
-            </tr>
-
-            {% for athlete_id, result in leagues[league].items() %}
-                <tr> 
-                    <td>{{ result.rank }}</td>
-                    <td>{{ result.points }}</td>
-                    <td><a href="https://www.strava.com/athletes/{{ result.athlete.id }}">{{ result.athlete['firstname'] }} {{ result.athlete['lastname'] }}</a></td> 
-                    <td><a href="https://www.strava.com/activities/{{ result.activity.id }}#{{ result.id }}">{{ result.id }}</a></td> 
-                    <td><a href="https://www.strava.com/activities/{{ result.activity.id }}">{{ result.activity.id }}</a></td>
-                     <td>{{ result.athlete.id }}</td> 
-                    <td>{{ result.elapsed_time_formatted }}</td> 
-                    <td>{{ result.average_heartrate }}</td>
-                     <td>{{ result.start_time_formatted }}</td>
-                     <td>{{ result.average_watts }}</td> 
-                </tr>
-            {% endfor %}
-
-        </table>
-    {% endfor %}
-
-<br /><br />
-<a href="/admin">Admin</a>
-</body>
-</html>
-

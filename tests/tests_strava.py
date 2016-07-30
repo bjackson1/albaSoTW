@@ -12,8 +12,8 @@ class tests_Strava(unittest.TestCase):
     efforts = []
 
     def setupTestData(self):
-        redisclient('localhost', 6379)
-        self.test_data = loader().setupTestData(file='test_seed_data.yml')
+        redisclient('localhost', 6379, db=1)
+        self.test_data = loader().setupTestData(file='../test_seed_data.yml')
         self.efforts = self.test_data['loaded_efforts']
 
     def test_Strava_get_access_token_whenCalled_returnsTestDataToken(self):

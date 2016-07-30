@@ -3,21 +3,27 @@ import os
 import yaml
 from storage import redisclient
 import json
+from datetime import date
+
 
 class loader:
     def loadconfig(self, file):
         SCRIPTPATH = os.path.dirname(os.path.realpath(__file__))
-        cfgstream = open(SCRIPTPATH + '/' + file)
-        config = yaml.load(cfgstream)
-        return config
+        with open(SCRIPTPATH + '/' + file) as cfgstream:
+            config = yaml.load(cfgstream)
+            return config
 
 
     def setupTestData(self, file):
-        redisclient('localhost', 6379)
         config = self.loadconfig(file)['redis']
 
+        sotw_key = 'sotw_%s_%s' % (date.today().year, date.today().isocalendar()[1])
+
         redisclient.set('api_token', config['api_token'])
-        redisclient.set('sotw', config['sotw'])
+        redisclient.set('%s_segment' % sotw_key, config['sotw_current']['segment'])
+
+        for neutral_zone in config['sotw_current']['neutral_zones']:
+            redisclient.sadd('%s_neutral_zones' % sotw_key, neutral_zone)
 
         if 'members' in config:
             for member in config['members']:
@@ -25,6 +31,10 @@ class loader:
 
                 for key, value in member_data.items():
                     redisclient.hset(member, key, value)
+
+        # if 'segments' in config:
+        #     for segment in config['segments']:
+        #         segment_data = config['segments'][segment]
 
         try:
             redisclient.delete('divisions')
@@ -47,8 +57,18 @@ class loader:
                 for value in division_data['members']:
                     redisclient.sadd(division + '_members', value)
 
-        if config['efforts']:
-            config['loaded_efforts'] = json.loads(config['efforts'])
+        if config['efforts']['segment']:
+            config['loaded_efforts'] = json.loads(config['efforts']['segment'])
+
+            if config['efforts']['neutral_zones']:
+                config['loaded_neutral_zones'] = []
+                for neutral_zone in config['efforts']['neutral_zones']:
+                    loaded_neutral_zone_efforts = {}
+
+                    for neutral_zone_effort in neutral_zone:
+                        loaded_neutral_zone_efforts[neutral_zone_effort['id']] = neutral_zone_effort
+
+                    config['loaded_neutral_zones'].append(loaded_neutral_zone_efforts)
 
         return config
 

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<title>Segment Efforts</title>
+<link rel="stylesheet" href="./static/default.css" type="text/css"/>
+<script src="https://cdn.auth0.com/js/lock/10.0/lock.min.js"></script>
+<script type="text/javascript">
+  var lock = new Auth0Lock('f9dF4rSZNvgJhiRe1EFJsg1ymJlmih2k', 'albasotw.auth0.com', {
+    auth: {
+      redirectUrl: 'http://212.159.46.52:5000/callback',
+      responseType: 'code',
+      params: {
+        scope: 'openid email' // Learn about scopes: https://auth0.com/docs/scopes
+      }
+    }
+  });
+</script>
+
+<body>
+
+<div class="headerbar">SoTW Efforts</div>
+<div class="mainbody">
+
+<!--
+{{ leagues }}
+
+{{ user }}
+-->
+
+    {% if leagues != None %}
+        {% for league in leagues|sort() %}
+            <h1>{{ league }}</h1>
+            <table border="1" cellpadding="8" cellspacing="0">
+                <tr>
+                    <th>Rank</th>
+                    <th>Points</th>
+                    <th>Name</th>
+                    <!--th>Effort ID</th>
+                    <th>Activity ID</th>
+                    <th>Athlete ID</th-->
+                    <th>Corrected Time</th>
+                    <th>Neutralised Times</th>
+                    <th>Elapsed Time</th>
+                    <th>Heart Rate</th>
+                    <th>Power</th>
+                    <th>Start Date/Time</th>
+                </tr>
+
+                {% for athlete_id, result in leagues[league].items() %}
+                    <tr> 
+                        <td>{{ result.rank }}</td>
+                        <td>{{ result.points }}</td>
+                        <td>
+                            <a href="https://www.strava.com/athletes/{{ result.athlete.id }}">{{ result.athlete['firstname'] }} {{ result.athlete['lastname'] }}</a>
+                            <a href="https://www.strava.com/activities/{{ result.activity.id }}#{{ result.id }}"><img src="/static/activity.png" height="16px" width="16px"></a>
+                            <!--a href="https://www.strava.com/activities/{{ result.activity.id }}"><img src="/static/effort.png" height="16px" width="16px"></a-->
+                        </td> 
+                        <!--td><a href="https://www.strava.com/activities/{{ result.activity.id }}#{{ result.id }}">{{ result.id }}</a></td> 
+                        <td><a href="https://www.strava.com/activities/{{ result.activity.id }}">{{ result.activity.id }}</a></td>
+                         <td>{{ result.athlete.id }}</td--> 
+                        <td>{{ result.corrected_time_formatted }}</td>
+                        <td>{{ result.neutralised_times_formatted }}</td>
+                        <td>{{ result.elapsed_time_formatted }}</td>
+                        <td>{{ result.average_heartrate }}</td>
+                         <td>{{ result.average_watts }}</td>
+                         <td>{{ result.start_time_formatted }}</td>
+
+                    </tr>
+                {% endfor %}
+
+            </table>
+        {% endfor %}
+    {% else %}
+        There was an error processing results.  Please ensure that a SoTW is configured.
+    {% endif %}
+
+<br /><br />
+    {% if user != None and user.user_metadata is defined and user.user_metadata['admin'] == 'true' %}
+        Logged in as: {{ user.nickname }}<br />
+        <a href="/admin">Admin Console</a><br />
+        <a href="/logout">Logout</a><br />
+    {% else %}
+        <button onclick="lock.show();">Login</button>
+    {% endif %}
+
+</div>
+</body>
+</html>
+

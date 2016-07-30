@@ -90,6 +90,7 @@ redis:
   divisions:
     div1:
       name: 'Division 1'
+      sex: 'M'
       members:
         - 1338208
         - 10000006
@@ -97,6 +98,7 @@ redis:
         - 10000004
     botr:
       name: 'Best of the Rest'
+      sex: 'M'
       members:
         - 338208
         - 373497

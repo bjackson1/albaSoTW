@@ -9,8 +9,8 @@ class tests_Athlete(unittest.TestCase):
     test_data = None
 
     def setupTestData(self):
-        redisclient('localhost', 6379)
-        self.test_data = loader().setupTestData(file='test_seed_data.yml')
+        redisclient('localhost', 6379, db=1)
+        self.test_data = loader().setupTestData(file='../test_seed_data.yml')
         # self.efforts = self.test_data['loaded_efforts']
 
     def test_Athlete_init_whenCalledWithAthleteIdNotInRedis_returnsAthleteRecordRetrievedFromStrava(self):

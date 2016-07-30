@@ -29,9 +29,16 @@ class Strava:
     def get_athlete(self, athlete_id):
         access_token = self.get_access_token()
 
-        athlete_object = webrequest.getjsonfromurl(self.API_URL + '/athletes/' + athlete_id, token=access_token)
+        athlete_object = webrequest.getjsonfromurl('%s/athletes/%s' % (self.API_URL, athlete_id), token=access_token)
 
         return athlete_object
+
+    def get_segment(self, segment_id):
+        access_token = self.get_access_token()
+
+        segment_object = webrequest.getjsonfromurl('%s/segments/%s' % (self.API_URL, segment_id), token=access_token)
+
+        return segment_object
 
     def get_access_token(self):
         return redisclient.get('api_token')

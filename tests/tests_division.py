@@ -7,12 +7,13 @@ class tests_Division(unittest.TestCase):
     test_data = None
 
     def __init__(self, *args, **kwargs):
+        redisclient('localhost', 6379, db=1)
         super(tests_Division, self).__init__(*args, **kwargs)
         self.setupTestData()
 
     def setupTestData(self):
         redisclient('localhost', 6379)
-        self.test_data = loader().setupTestData(file='test_seed_data.yml')
+        self.test_data = loader().setupTestData(file='../test_seed_data.yml')
         # self.efforts = self.test_data['loaded_efforts']
 
     def test_Division_get_all_whenCalledWithGetAthletesFlag_returnsAllDivisionsAndAthletesFromRedis(self):

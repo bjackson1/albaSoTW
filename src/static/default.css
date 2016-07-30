@@ -9,9 +9,9 @@ table {
     border: 0px solid #c0c0c0;
     text-align: center;
     font-size: 12px;
-    padding-left: 40px;
+    /*padding-left: 40px;*/
 }
-
+/*
 div {
     padding-left: 40px;
 }
@@ -19,7 +19,7 @@ div {
 h1, h2 {
     padding-left: 40px;
 }
-
+*/
 tr, td {
     padding: 10px;
     border-left: 0px;
@@ -34,7 +34,7 @@ th {
     background-color: black;
     color: white;
     font-weight: bold;
-    min-width: 100px;
+    min-width: 60px;
     border: 0px;
 }
 
@@ -46,8 +46,21 @@ tr:hover {
     background-color: #fff7fd;
 }
 
+a:link {
+    color:  #e62a86;
+    text-decoration: none;
+}
+
+a:visited {
+    color: #c6176d;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
 input[type=text], select {
-    width: 200px;
+    width: 400px;
     padding: 12px 20px;
     margin: 8px 0;
     display: inline-block;
@@ -96,4 +109,9 @@ button:hover {
 .copyright {
     font-color: gray;
     font-size: 10px;
+}
+
+.mainbody {
+    padding: 40px;
+    padding-top: 0px;
 }

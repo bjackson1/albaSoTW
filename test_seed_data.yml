@@ -1,7 +1,10 @@
 ---
 redis:
   api_token: 'dea9ce42f79760b6da5efaace69b87980e3b0c89'
-  sotw: 2138646
+  sotw_current:
+    segment: 2138646
+    neutral_zones:
+      - 234567
   members:
     1338208:
       firstname: 'Brett'
@@ -45,9 +48,15 @@ redis:
       sex: 'M'
       token: 'bc38932ad890f242cf72389bb342cf07243'
       clubs: "[{'name': 'Club1'}, {'name': 'Club2'}]"
+  segments:
+    123456:
+      name: 'Test Segment 1'
+      distance: 1000
+      total_elevation_gain: 100
   divisions:
     tdiv1:
       name: 'Division 1'
+      sex: 'M'
       members:
         - 1338208
         - 10000006
@@ -55,18 +64,29 @@ redis:
         - 10000004
     tbotr:
       name: 'Best of the Rest'
+      sex: 'M'
       members:
         - 10000003
         - 10000002
         - 10000001
         - 338208
-  efforts: >
-    [
-      {"id": 1000000101, "elapsed_time": 101, "activity": {"id": 1000000101}, "athlete": {"id": 10000001}, "start_date_local": "2016-07-21T01:30:46Z"},
-      {"id": 1000000101, "elapsed_time": 110, "activity": {"id": 1000000101}, "athlete": {"id": 10000001}, "start_date_local": "2016-07-21T02:30:46Z"},
-      {"id": 1000000201, "elapsed_time": 101, "activity": {"id": 1000000201}, "athlete": {"id": 10000002}, "start_date_local": "2016-07-21T03:30:46Z"},
-      {"id": 1000000301, "elapsed_time": 150, "activity": {"id": 1000000301}, "athlete": {"id": 10000003}, "start_date_local": "2016-07-21T04:30:46Z"},
-      {"id": 1000000401, "elapsed_time": 145, "activity": {"id": 1000000401}, "athlete": {"id": 10000004}, "start_date_local": "2016-07-21T05:30:46Z"},
-      {"id": 1000000102, "elapsed_time": 102, "activity": {"id": 1000000102}, "athlete": {"id": 10000001}, "start_date_local": "2016-07-21T06:30:46Z"}
-    ]
+  efforts:
+    segment: >
+      [
+        {"id": 1000000101, "elapsed_time": 101, "activity": {"id": 1000000101}, "athlete": {"id": 10000001}, "start_date_local": "2016-07-21T01:30:46Z"},
+        {"id": 1000000101, "elapsed_time": 110, "activity": {"id": 1000000101}, "athlete": {"id": 10000001}, "start_date_local": "2016-07-21T02:30:46Z"},
+        {"id": 1000000201, "elapsed_time": 101, "activity": {"id": 1000000201}, "athlete": {"id": 10000002}, "start_date_local": "2016-07-21T03:30:46Z"},
+        {"id": 1000000301, "elapsed_time": 150, "activity": {"id": 1000000301}, "athlete": {"id": 10000003}, "start_date_local": "2016-07-21T04:30:46Z"},
+        {"id": 1000000401, "elapsed_time": 145, "activity": {"id": 1000000401}, "athlete": {"id": 10000004}, "start_date_local": "2016-07-21T05:30:46Z"},
+        {"id": 1000000102, "elapsed_time": 102, "activity": {"id": 1000000102}, "athlete": {"id": 10000001}, "start_date_local": "2016-07-21T06:30:46Z"}
+      ]
+    neutral_zones:
+      - [
+          {"id": 1000000511, "elapsed_time": 23, "activity": {"id": 1000000101}, "athlete": {"id": 10000001}, "start_date_local": "2016-07-21T01:35:46Z"},
+          {"id": 1000000111, "elapsed_time": 16, "activity": {"id": 1000000101}, "athlete": {"id": 10000001}, "start_date_local": "2016-07-21T02:35:46Z"},
+          {"id": 1000000211, "elapsed_time": 55, "activity": {"id": 1000000201}, "athlete": {"id": 10000002}, "start_date_local": "2016-07-21T03:35:46Z"},
+          {"id": 1000000311, "elapsed_time": 8, "activity": {"id": 1000000301}, "athlete": {"id": 10000003}, "start_date_local": "2016-07-21T04:35:46Z"},
+          {"id": 1000000411, "elapsed_time": 10, "activity": {"id": 1000000401}, "athlete": {"id": 10000004}, "start_date_local": "2016-07-21T05:35:46Z"},
+          {"id": 1000000112, "elapsed_time": 23, "activity": {"id": 1000000102}, "athlete": {"id": 10000001}, "start_date_local": "2016-07-21T06:35:46Z"}
+        ]
 
