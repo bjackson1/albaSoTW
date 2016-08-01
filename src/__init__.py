@@ -19,7 +19,7 @@
 #  - Admin auth
 
 
-from flask import Flask, request, render_template, session, redirect
+from flask import Flask, request, render_template, session, redirect, current_app
 from urllib.request import urlopen
 from urllib.parse import urlencode
 from contextlib import closing
@@ -32,10 +32,26 @@ from storage import redisclient
 from core import AlbaSotwCore
 import os, requests
 from functools import wraps
+from collections import OrderedDict
+from datetime import date, datetime, timedelta
+import logging
 
 app = Flask(__name__)
 redisclient('localhost', 6379)
 core = AlbaSotwCore()
+
+log = logging.getLogger('sotw.frontend')
+
+@app.before_request
+def log_request():
+    log.info('URL=%s ClientIP=%s Method=%s Proto=%s UserAgent=%s'
+             % (request.url,
+                request.headers.environ['REMOTE_ADDR'],
+                request.headers.environ['REQUEST_METHOD'],
+                request.headers.environ['SERVER_PROTOCOL'],
+                request.headers.environ['HTTP_USER_AGENT']))
+    # transaction = random.randint(0, 100000)
+    # request.['transaction'] = str(transaction)
 
 @app.route('/connect')
 def connect():
@@ -65,6 +81,9 @@ def logout():
     session.pop('profile')
     return redirect('/efforts')
 
+@app.route('/')
+def root_page():
+    return redirect('/efforts')
 
 # Here we're using the /callback route.
 @app.route('/callback')
@@ -115,14 +134,22 @@ def requires_auth(f):
 @app.route('/setsotw/<main_segment_id>/<neutral_segment_1_id>/<neutral_segment_2_id>/<neutral_segment_3_id>')
 @requires_auth
 def set_sotw(main_segment_id, neutral_segment_1_id=None, neutral_segment_2_id=None, neutral_segment_3_id=None):
-
+    log.info('set_sotw MainSegment=%s NeutralSegment1=%s NeutralSegment2=%s NeutralSegment3=%s'
+             % (main_segment_id,
+                neutral_segment_1_id,
+                neutral_segment_2_id,
+                neutral_segment_3_id))
     neutral_segments = []
 
     if neutral_segment_1_id != None: neutral_segments.append(neutral_segment_1_id)
     if neutral_segment_2_id != None: neutral_segments.append(neutral_segment_2_id)
     if neutral_segment_3_id != None: neutral_segments.append(neutral_segment_3_id)
 
-    core.add_sotw(main_segment_id, neutral_zones=neutral_segments)
+    try:
+        core.add_sotw(main_segment_id, neutral_zones=neutral_segments)
+        log.info('SotW successfully set')
+    except Exception as e:
+        log.exception('Failed to add SOTW')
 
     return "SoTW set to %s" % main_segment_id
 
@@ -159,31 +186,101 @@ def load_data(dataset):
 
     return "OK"
 
+def get_results_key(year=None, week_number=None):
+
+    if year == None or week_number == None:
+        week_number = date.today().isocalendar()[1]
+        year = date.today().year
+
+    return 'results_%s_%s' % (year, week_number)
+
+@app.route('/updateefforts/<year>/<week_number>')
+@app.route('/updateefforts')
+def update_efforts(year=None, week_number=None):
+    transaction_start_time = datetime.now()
+    log.info('Method=update_efforts Year=%s WeekNumber=%s' % (year, week_number))
+
+    try:
+        if year != None and week_number != None:
+            leagues = core.compile_efforts(year=year, week_number=week_number)
+        else:
+            leagues=core.compile_efforts()
+
+        log.info('Leagues compiled Count=%s' % len(leagues))
+
+    except Exception as ex:
+        log.exception('Failed to compile leagues')
+        leagues=None
+        error=ex
+
+    data = json.dumps(leagues)
+
+    result_key=get_results_key(year=year, week_number=week_number)
+    log.info('Method=update_efforts Message="Storing results" ResultKey=%s' % result_key)
+    redisclient.set(result_key, data)
+
+    log.info('Method=update_efforts Message="Process complete"')
+
+    time_taken = datetime.now() - transaction_start_time
+    log.info('PERF Method=updateefforts ms=%s' % (time_taken.microseconds))
+    return "OK"
+
 @app.route('/efforts')
-def efforts():
+@app.route('/efforts/<year>/<week_number>')
+def efforts(year=None, week_number=None):
+    transaction_start_time = datetime.now()
+    log.info('Method=efforts Year=%s WeekNumber=%s' % (year, week_number))
     user_profile=None
     error=None
+    sorted_results = None
+
+
+    if year == None or week_number == None:
+        result_set=get_results_key()
+    else:
+        result_set='results_%s_%s' % (year, week_number)
 
     if 'profile' in session:
         user_profile = session['profile']
 
-    try:
-        leagues=core.compile_efforts()
-    except Exception as ex:
-        leagues=None
-        error=ex
+    log.debug('Method=efforts Message="Getting data from redis" ResultSet=%s' % result_set)
+    results_json = redisclient.get(result_set)
+    log.debug('Method=efforts Message="Retrieved data from redis" Length=%s DataSample="%s"' % (len(results_json), results_json[:20]))
 
-    return render_template('efforts.html', leagues=leagues, user=user_profile, error=error)
+    if results_json != None and results_json != 'null':
+        results = json.loads(results_json)
+        log.debug('Method=efforts Message="Data parsed" ElementCount=%s' % len(results))
+
+        sorted_results = {}
+
+        log.debug('Method=efforts Message="Sorting Results"')
+        for division, table in results.items():
+            sorted_results[division] = OrderedDict(sorted(table.items(), key=lambda t: t[1]['rank']))
+    else:
+        log.info('Method=efforts Message="No data found for selected period"')
+
+
+    log.debug('Method=efforts Message="Getting result sets list from redis"')
+    result_sets = []
+    result_keys = redisclient.keys("results_*")
+    log.debug('Method=efforts Message="Results keys retrieved" ResultKeys="%s"' % result_keys)
+
+    for result_key in result_keys:
+        result_year = result_key.split('_')[1]
+        result_week_number = result_key.split('_')[2]
+        result_sets.append([result_year, result_week_number])
+
+    log.debug('Method=efforts Message="Rendering page"')
+    rendered_page = render_template('efforts.html', leagues=sorted_results, user=user_profile, error=error, result_sets=result_sets, this_week=[year, week_number])
+    log.debug('Method=efforts Message="Page rendered" Length=%s DataSample="%s"' % (len(rendered_page), rendered_page[:10]))
+    time_taken = datetime.now() - transaction_start_time
+    log.info('PERF Method=efforts ms=%s' % (time_taken.microseconds))
+    return rendered_page
 
 @app.route('/getsegment/<segment_id>')
 def get_segment(segment_id):
     segment_data = Segment(segment_id).get()
     return json.dumps(segment_data)
 
-if __name__ == '__main__':
-    app.secret_key = 'super secret key'
-    app.config['SESSION_TYPE'] = 'filesystem'
-
-    app.run(debug=True, host='0.0.0.0', threaded=True)
 
 

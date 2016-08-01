@@ -4,7 +4,7 @@ from datetime import datetime
 
 class Strava:
     API_URL = 'https://www.strava.com/api/v3'
-    PAGE_SIZE = 200
+    PAGE_SIZE = 50
 
     def get_efforts(self, segment, starttime , endtime):
         access_token = self.get_access_token()
@@ -13,16 +13,20 @@ class Strava:
         page = 1
 
         while returned_results < 0 or returned_results == self.PAGE_SIZE:
-            efforts = webrequest.getjsonfromurl(self.API_URL + '/segments/' + segment + '/all_efforts',
-                                             {'start_date_local': starttime.isoformat(), #'2016-04-03T00.00.00',
-                                              'end_date_local': endtime.isoformat(), #'2016-04-04T18.00.00',
-                                              'per_page': str(self.PAGE_SIZE),
-                                              'page': page},
-                                             access_token)
+            try:
+                efforts = webrequest.getjsonfromurl(self.API_URL + '/segments/' + segment + '/all_efforts',
+                                                 {'start_date_local': starttime.isoformat(), #'2016-04-03T00.00.00',
+                                                  'end_date_local': endtime.isoformat(), #'2016-04-04T18.00.00',
+                                                  'per_page': str(self.PAGE_SIZE),
+                                                  'page': page},
+                                                 access_token)
 
-            returned_results = len(efforts)
-            effort_list = effort_list + efforts
-            page = page + 1
+                returned_results = len(efforts)
+                effort_list = effort_list + efforts
+                page = page + 1
+            except Exception as e:
+                print(e)
+                raise(e)
 
         return effort_list
 

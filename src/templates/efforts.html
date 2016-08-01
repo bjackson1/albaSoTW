@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <title>Segment Efforts</title>
-<link rel="stylesheet" href="./static/default.css" type="text/css"/>
+<link rel="stylesheet" href="/static/default.css" type="text/css"/>
 <script src="https://cdn.auth0.com/js/lock/10.0/lock.min.js"></script>
 <script type="text/javascript">
   var lock = new Auth0Lock('f9dF4rSZNvgJhiRe1EFJsg1ymJlmih2k', 'albasotw.auth0.com', {
@@ -17,7 +17,7 @@
 
 <body>
 
-<div class="headerbar">SoTW Efforts</div>
+<div class="headerbar">Segment of the Week Efforts</div>
 <div class="mainbody">
 
 <!--
@@ -25,6 +25,13 @@
 
 {{ user }}
 -->
+
+    <br />
+    Select week: <select id="result_set">
+    {% for set in result_sets|sort(reverse=True) %}
+        <option value="{{ set[0] }}/{{ set[1] }}" {% if this_week[0] == set[0] and this_week[1] == set[1] %}selected{% endif %}>{{ set[0] }}, week {{ set[1] }}</option>
+    {% endfor %}
+    </select><button id="open_result_set" onclick="location='/efforts/' + document.getElementById('result_set').value">Go</button>
 
     {% if leagues != None %}
         {% for league in leagues|sort() %}
@@ -70,7 +77,9 @@
             </table>
         {% endfor %}
     {% else %}
-        There was an error processing results.  Please ensure that a SoTW is configured.
+        <br />
+        <br />
+        There is no data available yet for this period.  Please ensure that a SoTW is configured for the selected week.
     {% endif %}
 
 <br /><br />

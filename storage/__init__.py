@@ -66,3 +66,6 @@ class redisclient:
 
     def save():
         redisclient.__redisconnection.save()
+
+    def keys(pattern):
+        return redisclient.__redisconnection.keys(pattern)

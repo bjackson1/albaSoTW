@@ -5,3 +5,6 @@ __pycache__
 dump.rdb
 .idea/*
 .coverage
+sotw.log
+spam.log
+

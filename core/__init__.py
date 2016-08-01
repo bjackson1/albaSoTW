@@ -2,13 +2,14 @@ import yaml
 import os
 from datetime import date, timedelta, datetime
 from collections import OrderedDict
+import logging, inspect, functools
 
 from storage import redisclient
 from strava import Strava
 from athlete import Athlete
 
 SCRIPTPATH=os.path.dirname(os.path.realpath(__file__))
-
+log = logging.getLogger('sotw.core')
 
 class AlbaSotwCore:
     __instance = None
@@ -28,6 +29,7 @@ class AlbaSotwCore:
             return config
 
     def add_sotw(self, segment_id, neutral_zones=None):
+        log.info('Method=%s, SegmentId=%s, NeutralZones=%s' % ('add_sotw', segment_id, neutral_zones))
         key_name = self.get_sotw_key_name()
         redisclient.set('%s_segment' % key_name, segment_id)
 
@@ -46,25 +48,55 @@ class AlbaSotwCore:
 
         return 'sotw_%s_%s' % (year, week_number)
 
-    def compile_efforts(self):
-        # access_token = redisclient.getasstring('api_token')
-        key_name = self.get_sotw_key_name()
-        segment = redisclient.get('%s_segment' % key_name)
-        neutral_zones = redisclient.smembers('%s_neutral_zones' % key_name)
-
+    def compile_efforts(self, year=None, week_number=None):
+        log.info('Method=compile_efforts Year=%s WeekNumber=%s' % (year, week_number))
         leagues = {}
 
-        today = date.today()
-        starttime = datetime.combine(today - timedelta(today.weekday()), datetime.min.time())
-        endtime = starttime + timedelta(days=5, hours=20)
+        starttime = datetime.combine(date.today() - timedelta(date.today().weekday()), datetime.min.time())
+        key_name = self.get_sotw_key_name()
 
-        segment_efforts = Strava().get_efforts(segment, starttime, endtime)
+        if year != None and week_number != None:
+            key_name = 'sotw_%s_%s' % (year, week_number)
+            d = "%s-W%s" % (year, week_number)
+            r = datetime.strptime(d + '-0', "%Y-W%W-%w")
+            starttime = datetime.combine(r - timedelta(r.weekday()), datetime.min.time())
+
+        endtime = starttime + timedelta(days=6, hours=20)
+        log.info('Method=compile_efforts ResultKey=%s' % key_name)
+
+        log.info('Method=compile_efforts Message="Getting segment data from redis"')
+
+        segment = redisclient.get('%s_segment' % key_name)
+        log.info('Method=compile_efforts Segment=%s' % segment)
+
+        neutral_zones = redisclient.smembers('%s_neutral_zones' % key_name)
+        log.info('Method=compile_efforts NeutralZones=%s' % neutral_zones)
+
+        log.info(
+            'Method=compile_efforts Message="Getting segment data from Strava" Segment=%s StartTime=%s EndTime=%s'
+            % (segment, starttime, endtime))
+        try:
+            segment_efforts = Strava().get_efforts(segment, starttime, endtime)
+            log.info('Method=compile_efforts Message="Data from Strava" ResultCount=%s' % (len(segment_efforts)))
+        except Exception as e:
+            log.exception('Method=compile_efforts Message="Strava call failed"')
+            raise(e)
 
         for segment_effort in segment_efforts:
             segment_effort['neutralised'] = {}
 
         for neutral_zone in neutral_zones:
-            neutral_zone_efforts = Strava().get_efforts(neutral_zone, starttime, endtime)
+            log.info(
+                'Method=compile_efforts Message="Getting segment data from Strava" Segment=%s StartTime=%s EndTime=%s'
+                % (neutral_zone, starttime, endtime))
+            try:
+                neutral_zone_efforts = Strava().get_efforts(neutral_zone, starttime, endtime)
+                log.info('Method=compile_efforts Message="Data from Strava" ResultCount=%s' % (len(neutral_zone_efforts)))
+            except Exception as e:
+                log.exception('Method=compile_efforts Message="Strava call failed"')
+                raise (e)
+
+            # neutral_zone_efforts = Strava().get_efforts(neutral_zone, starttime, endtime)
 
             for neutral_zone_effort in neutral_zone_efforts:
                 for segment_effort in segment_efforts:
@@ -143,6 +175,6 @@ class AlbaSotwCore:
 
             rank = rank + max(joint, 1)
 
-        s = OrderedDict(sorted(efforts.items(), key=lambda t: t[1]['rank']))
+        # s = OrderedDict(sorted(efforts.items(), key=lambda t: t[1]['rank']))
 
-        return s
+        return efforts
