@@ -1,0 +1,17 @@
+---
+web:
+#  restart: always
+  build: ./web
+  ports:
+    - "5000:5000"
+  expose:
+    - "5000"
+  links:
+    - redis
+  command: python3 run_server.py
+#  command: python3 ./web/run_server.py
+
+redis:
+  image: redis:latest
+  expose:
+    - "6379"

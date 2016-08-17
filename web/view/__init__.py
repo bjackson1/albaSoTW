@@ -1,25 +1,5 @@
-#!/usr/bin/env python
 
-# Each week a segment is manually voted for on Facebook.
-# Segments that go through red lights may have one or two refunds, where times from a seperate segment is taken off the final time
-# League tables get updated after the close off period/during the week
-#  ... and results get auto-posted to Facebook.
-# Leagues run for 1 quarter, and then 4 riders per division get relegated/promoted (apart from ladies as they have one division)
-# If a rider doesn't post a time at all during a quarter then they are also relegated and more riders promoted from the division below.
-# Solution needs to post/update the league tables and weekly results onto the current Wordpress albarosacc.com website.
-# Needs to be able to still do manual entries/adjustments for complicated segments or multi segment weeks.
-#
-#
-# Known issues
-#
-# 1. If a segment spans a month then Strava fails to show all times if the view is selected by "this week"
-
-# Priorities
-#  - Neutral Zones
-#  - Admin auth
-
-
-from flask import Flask, request, render_template, session, redirect, current_app
+from flask import Flask, request, render_template, session, redirect, current_app, g
 from urllib.request import urlopen
 from urllib.parse import urlencode
 from contextlib import closing
@@ -37,27 +17,38 @@ from datetime import date, datetime, timedelta
 import logging
 
 app = Flask(__name__)
-redisclient('localhost', 6379)
+
+if 'REDIS_PORT' in os.environ:
+    redis_addr = os.environ['REDIS_PORT']
+else:
+    redis_addr = 'tcp://localhost:6379'
+
+redis_port = redis_addr.split(':')[2]
+redis_ip = redis_addr.split('//')[1].split(':')[0]
+redisclient(redis_ip, redis_port)
 core = AlbaSotwCore()
 
 log = logging.getLogger('sotw.frontend')
 
+
 @app.before_request
 def log_request():
-    log.info('URL=%s ClientIP=%s Method=%s Proto=%s UserAgent=%s'
-             % (request.url,
+    g.transaction_id = random.randint(0, 100000)
+    log.info('Method=BeforeRequest Transaction=%s URL=%s ClientIP=%s Method=%s Proto=%s UserAgent=%s'
+             % (g.transaction_id,
+                request.url,
                 request.headers.environ['REMOTE_ADDR'],
                 request.headers.environ['REQUEST_METHOD'],
                 request.headers.environ['SERVER_PROTOCOL'],
                 request.headers.environ['HTTP_USER_AGENT']))
-    # transaction = random.randint(0, 100000)
-    # request.['transaction'] = str(transaction)
+
 
 @app.route('/connect')
 def connect():
     state = random.randint(0, 2000000000)
 
     return render_template("connect.html", state=state)
+
 
 @app.route('/exchange')
 def token_exchange():
@@ -76,14 +67,17 @@ def token_exchange():
 
         return render_template('connected.html', athlete=athlete)
 
+
 @app.route('/logout')
 def logout():
     session.pop('profile')
     return redirect('/efforts')
 
+
 @app.route('/')
 def root_page():
     return redirect('/efforts')
+
 
 # Here we're using the /callback route.
 @app.route('/callback')
@@ -117,6 +111,7 @@ def callback_handling():
   # In our case it's /dashboard
   return redirect('/efforts')
 
+
 def requires_auth(f):
     @wraps(f)
     def decorated(*args, **kwargs):
@@ -128,14 +123,16 @@ def requires_auth(f):
 
     return decorated
 
+
 @app.route('/setsotw/<main_segment_id>')
 @app.route('/setsotw/<main_segment_id>/<neutral_segment_1_id>')
 @app.route('/setsotw/<main_segment_id>/<neutral_segment_1_id>/<neutral_segment_2_id>')
 @app.route('/setsotw/<main_segment_id>/<neutral_segment_1_id>/<neutral_segment_2_id>/<neutral_segment_3_id>')
 @requires_auth
 def set_sotw(main_segment_id, neutral_segment_1_id=None, neutral_segment_2_id=None, neutral_segment_3_id=None):
-    log.info('set_sotw MainSegment=%s NeutralSegment1=%s NeutralSegment2=%s NeutralSegment3=%s'
-             % (main_segment_id,
+    log.info('Method=set_sotw Transaction=%s  MainSegment=%s NeutralSegment1=%s NeutralSegment2=%s NeutralSegment3=%s'
+             % (g.transaction_id,
+                main_segment_id,
                 neutral_segment_1_id,
                 neutral_segment_2_id,
                 neutral_segment_3_id))
@@ -153,6 +150,7 @@ def set_sotw(main_segment_id, neutral_segment_1_id=None, neutral_segment_2_id=No
 
     return "SoTW set to %s" % main_segment_id
 
+
 @app.route('/admin')
 @requires_auth
 def add_athlete_page():
@@ -160,12 +158,14 @@ def add_athlete_page():
 
     return render_template('admin.html', divisions=divisions)
 
+
 @app.route('/removeathlete/<athlete_id>')
 @requires_auth
 def remove_athlete(athlete_id):
     Division.remove_athlete_from_all_divisions(athlete_id)
 
     return "OK"
+
 
 @app.route('/addathlete/<athlete_id>/<division>')
 @requires_auth
@@ -177,6 +177,7 @@ def add_athlete(athlete_id, division):
     else:
         return 'Incorrect gender for Division'
 
+
 @app.route('/loaddata/<dataset>')
 @requires_auth
 def load_data(dataset):
@@ -186,6 +187,7 @@ def load_data(dataset):
 
     return "OK"
 
+
 def get_results_key(year=None, week_number=None):
 
     if year == None or week_number == None:
@@ -194,15 +196,17 @@ def get_results_key(year=None, week_number=None):
 
     return 'results_%s_%s' % (year, week_number)
 
+
 @app.route('/updateefforts/<year>/<week_number>')
 @app.route('/updateefforts')
 def update_efforts(year=None, week_number=None):
     transaction_start_time = datetime.now()
-    log.info('Method=update_efforts Year=%s WeekNumber=%s' % (year, week_number))
+    log.info('Method=update_efforts Transaction=%s Year=%s WeekNumber=%s' % (g.transaction_id, year, week_number))
+    leagues={}
 
     try:
         if year != None and week_number != None:
-            leagues = core.compile_efforts(year=year, week_number=week_number)
+            leagues=core.compile_efforts(year=year, week_number=week_number)
         else:
             leagues=core.compile_efforts()
 
@@ -212,6 +216,7 @@ def update_efforts(year=None, week_number=None):
         log.exception('Failed to compile leagues')
         leagues=None
         error=ex
+        return "Failed"
 
     data = json.dumps(leagues)
 
@@ -225,15 +230,15 @@ def update_efforts(year=None, week_number=None):
     log.info('PERF Method=updateefforts ms=%s' % (time_taken.microseconds))
     return "OK"
 
+
 @app.route('/efforts')
 @app.route('/efforts/<year>/<week_number>')
 def efforts(year=None, week_number=None):
     transaction_start_time = datetime.now()
-    log.info('Method=efforts Year=%s WeekNumber=%s' % (year, week_number))
+    log.info('Method=efforts Transaction=%s Year=%s WeekNumber=%s' % (g.transaction_id, year, week_number))
     user_profile=None
     error=None
     sorted_results = None
-
 
     if year == None or week_number == None:
         result_set=get_results_key()
@@ -255,10 +260,11 @@ def efforts(year=None, week_number=None):
 
         log.debug('Method=efforts Message="Sorting Results"')
         for division, table in results.items():
-            sorted_results[division] = OrderedDict(sorted(table.items(), key=lambda t: t[1]['rank']))
+            sorted_results[division] = {}
+            sorted_results[division]['name'] = table['name']
+            sorted_results[division]['results'] = OrderedDict(sorted(table['results'].items(), key=lambda t: t[1]['rank']))
     else:
         log.info('Method=efforts Message="No data found for selected period"')
-
 
     log.debug('Method=efforts Message="Getting result sets list from redis"')
     result_sets = []
@@ -268,14 +274,32 @@ def efforts(year=None, week_number=None):
     for result_key in result_keys:
         result_year = result_key.split('_')[1]
         result_week_number = result_key.split('_')[2]
-        result_sets.append([result_year, result_week_number])
+        week_commencing = date(year=int(result_year), month=1, day=4) + timedelta(days=(int(result_week_number) - 1) * 7)
+        segment_id = redisclient.get('sotw_%s_%s_segment' % (result_year, result_week_number))
+        result = {'year': result_year,
+                  'week': result_week_number,
+                  'order_key': '%s.%s' % (result_year, result_week_number),
+                  'week_commencing': week_commencing}
+
+        if segment_id:
+            segment = Segment(segment_id)
+            result['segment'] = segment.get()
+
+        result_sets.append(result)
+
+
+
+    from operator import itemgetter
+    sorted_result_sets = sorted(result_sets, key=itemgetter('order_key'), reverse=True)
 
     log.debug('Method=efforts Message="Rendering page"')
-    rendered_page = render_template('efforts.html', leagues=sorted_results, user=user_profile, error=error, result_sets=result_sets, this_week=[year, week_number])
+    rendered_page = render_template('efforts.html', leagues=sorted_results, user=user_profile, error=error, result_sets=sorted_result_sets, this_week=[year, week_number])
     log.debug('Method=efforts Message="Page rendered" Length=%s DataSample="%s"' % (len(rendered_page), rendered_page[:10]))
     time_taken = datetime.now() - transaction_start_time
     log.info('PERF Method=efforts ms=%s' % (time_taken.microseconds))
+
     return rendered_page
+
 
 @app.route('/getsegment/<segment_id>')
 def get_segment(segment_id):

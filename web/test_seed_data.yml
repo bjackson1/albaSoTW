@@ -53,6 +53,10 @@ redis:
       name: 'Test Segment 1'
       distance: 1000
       total_elevation_gain: 100
+    234567:
+      name: 'Test Neutral Zone 1'
+      distance:  100
+      total_elevation_gain: 10
   divisions:
     tdiv1:
       name: 'Division 1'
@@ -62,6 +66,9 @@ redis:
         - 10000006
         - 10000005
         - 10000004
+        - 1319585
+        - 776351
+        - 2198262
     tbotr:
       name: 'Best of the Rest'
       sex: 'M'
@@ -70,6 +77,7 @@ redis:
         - 10000002
         - 10000001
         - 338208
+        - 703277
   efforts:
     segment: >
       [

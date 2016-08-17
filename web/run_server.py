@@ -1,4 +1,4 @@
-from src import app
+from view import app
 import logging
 
 app.secret_key = '<]FGhTHfrbvJM,5T'
