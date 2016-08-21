@@ -154,7 +154,7 @@ def set_sotw(main_segment_id, neutral_segment_1_id=None, neutral_segment_2_id=No
 @app.route('/admin')
 @requires_auth
 def add_athlete_page():
-    divisions = Division.get_all(True)
+    divisions = Division.get_all()
 
     return render_template('admin.html', divisions=divisions)
 
@@ -173,7 +173,7 @@ def add_athlete(athlete_id, division):
     if Division(division).add_athlete(athlete_id):
         athlete = Athlete(athlete_id)
 
-        return json.dumps(athlete.get())
+        return json.dumps(athlete.__dict__)
     else:
         return 'Incorrect gender for Division'
 

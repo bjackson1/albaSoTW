@@ -2,31 +2,54 @@ from strava import Strava
 from storage import redisclient
 
 class Athlete:
-    def __init__(self, athlete_id):
-        self.athlete_id = athlete_id
+    def __init__(self, athlete_id, firstname=None, lastname=None, gender=None, clubs=[]):
+        self.id = athlete_id
+        self.firstname = firstname
+        self.lastname = lastname
+        self.gender = gender
+        self.clubs = clubs
 
-        self.get_from_redis()
+        self.load()
 
-        if not self.athlete_object:
-            self.get_from_strava()
-            self.set_in_redis()
-            self.get_from_redis()
 
-        self.athlete_object['id'] = self.athlete_id
+    def load(self):
+        raw_data = redisclient.hgetall(self.id)
+        to_save = False
 
-    def get(self):
-        return self.athlete_object
+        if raw_data == {}:
+            raw_data = self.get_from_strava()
+            to_save = True
 
-    def get_from_redis(self):
-        self.athlete_object = redisclient.hgetall(self.athlete_id)
+        self.load_data(raw_data)
+
+        if to_save:
+            self.save()
+
 
     def get_from_strava(self):
-        self.athlete_object = Strava().get_athlete(self.athlete_id)
+        self.load_data(Strava().get_athlete(self.id))
 
-    def set_in_redis(self):
-        redisclient.hset(self.athlete_id, 'sex', self.athlete_object['sex'])
-        redisclient.hset(self.athlete_id, 'firstname', self.athlete_object['firstname'])
-        redisclient.hset(self.athlete_id, 'lastname', self.athlete_object['lastname'])
 
-        if 'clubs' in self.athlete_object:
-            redisclient.hset(self.athlete_id, 'clubs', self.athlete_object['clubs'])
+    def load_data(self, raw_data):
+        if raw_data != None:
+            if 'clubs' in raw_data:
+                self.clubs = raw_data['clubs']
+
+            if 'sex' in raw_data:
+                self.gender = raw_data['sex']
+
+            if 'gender' in raw_data:
+                self.gender = raw_data['gender']
+
+            if 'firstname' in raw_data:
+                self.firstname = raw_data['firstname']
+
+            if 'lastname' in raw_data:
+                self.lastname = raw_data['lastname']
+
+
+    def save(self):
+        redisclient.hset(self.id, 'gender', self.gender)
+        redisclient.hset(self.id, 'firstname', self.firstname)
+        redisclient.hset(self.id, 'lastname', self.lastname)
+        redisclient.hset(self.id, 'clubs', self.clubs)

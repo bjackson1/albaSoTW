@@ -2,6 +2,9 @@ from datetime import date, timedelta, datetime
 import logging, inspect, functools
 from storage import redisclient
 from strava import Strava
+import json
+from collections import OrderedDict
+from division import Division
 
 log = logging.getLogger('sotw.sotw')
 
@@ -10,11 +13,13 @@ class SegmentOfTheWeek:
     def __init__(self, year=None, week_number=None, main_segment_id=None, neutral_zone_ids=None):
         log.debug("Method=init Year=%s WeekNumber=%s MainSegmentId=%s NeutralZoneIds=%s" % (year, week_number, main_segment_id, neutral_zone_ids))
 
-        self.year, self.week_number, self.main_segment_id, self.neutral_zone_ids = self.validate_and_clean(year, week_number, main_segment_id, neutral_zone_ids)
+        self.year, self.week_number, self.main_segment_id, self.neutral_zone_ids = self.validate_and_clean_input(year, week_number, main_segment_id, neutral_zone_ids)
         self.year, self.week_number = self.get_period(self.year, self.week_number)
 
         self.start_datetime, self.end_datetime = self.get_start_end_datetimes()
         self.key_name = self.get_key_name()
+
+        self.results = {}
 
         if main_segment_id == None:
             self.main_segment_id, self.neutral_zone_ids = self.get_segment_ids()
@@ -64,7 +69,7 @@ class SegmentOfTheWeek:
         neutral_zone_ids = redisclient.smembers('%s_neutral_zones' % self.key_name)
         log.debug('Method=get_segment_ids NeutralZones=%s' % neutral_zone_ids)
 
-        y, w, main_segment_id, neutral_zone_ids = self.validate_and_clean(main_segment_id=main_segment_id, neutral_zone_ids=neutral_zone_ids)
+        y, w, main_segment_id, neutral_zone_ids = self.validate_and_clean_input(main_segment_id=main_segment_id, neutral_zone_ids=neutral_zone_ids)
 
         log.info('Method=get_segment_ids Message="Got data from Redis" MainSegmentId=%s NeutralZonesIds=%s' % (main_segment_id, neutral_zone_ids))
         return main_segment_id, neutral_zone_ids
@@ -79,7 +84,7 @@ class SegmentOfTheWeek:
                 redisclient.sadd('%s_neutral_zones' % self.key_name, neutral_zone_id)
 
 
-    def validate_and_clean(self, year=None, week_number=None, main_segment_id=None, neutral_zone_ids=None):
+    def validate_and_clean_input(self, year=None, week_number=None, main_segment_id=None, neutral_zone_ids=None):
         if year != None:
             if (type(year) is str and year.isdigit()) or type(year) is int:
                 year = int(year)
@@ -144,7 +149,7 @@ class SegmentOfTheWeek:
                         % (neutral_segment_id, self.start_datetime, self.end_datetime))
 
                     try:
-                        segment_efforts = Strava().get_efforts(neutral_segment_id, self.start_datetime, self.end_datetime)
+                        segment_efforts = Strava().get_neutralised_efforts(neutral_segment_id, self.start_datetime, self.end_datetime)
                         log.info(
                             'Method=load_efforts Message="Data from Strava" ResultCount=%s' % (len(segment_efforts)))
 
@@ -156,118 +161,99 @@ class SegmentOfTheWeek:
                         log.exception('Method=load_efforts Message="Strava call failed"')
                         raise (e)
 
+
     def enrich_efforts(self):
         if self.segment_efforts != None:
             for segment_effort_id, segment_effort in self.segment_efforts.items():
-
                 # Calculate Neutralised Times
                 neutralised_times = []
+                neutralised_distances = []
+
                 for neutral_zone_effort in segment_effort['neutral_efforts']:
                     neutralised_times.append(neutral_zone_effort['elapsed_time'])
+                    neutralised_distances.append(neutral_zone_effort['distance'])
 
                 segment_effort['neutralised_times'] = neutralised_times
+                segment_effort['neutralised_distances'] = neutralised_distances
 
                 # Calculate Net Effort Time
                 segment_effort['net_elapsed_time'] = segment_effort['elapsed_time'] - sum(neutralised_times)
 
-                segment_effort['pace_kph'] = round((segment_effort['distance']/1000) / (segment_effort['net_elapsed_time']/60/60), 2)
+                # Calculate Net Distance
+                segment_effort['net_distance'] = segment_effort['distance'] - sum(neutralised_distances)
+
+                # Calculate pace
+                segment_effort['pace_kph'] = round((segment_effort['net_distance']/1000) / (segment_effort['net_elapsed_time']/60/60), 2)
                 segment_effort['pace_mph'] = round(segment_effort['pace_kph'] / 1.61, 2)
 
-    # def compile_efforts(self, year=None, week_number=None):
-    #     log.info('Method=compile_efforts Year=%s WeekNumber=%s' % (year, week_number))
-    #     leagues = {}
-    #
-    #     starttime = datetime.combine(date.today() - timedelta(date.today().weekday()), datetime.min.time())
-    #     key_name = self.get_sotw_key_name()
-    #
-    #     if year != None and week_number != None:
-    #         key_name = 'sotw_%s_%s' % (year, week_number)
-    #         d = "%s-W%s" % (year, week_number)
-    #         r = datetime.strptime(d + '-0', "%Y-W%W-%w")
-    #         starttime = datetime.combine(r - timedelta(r.weekday()), datetime.min.time())
-    #
-    #     endtime = starttime + timedelta(days=6, hours=20)
-    #     log.info('Method=compile_efforts ResultKey=%s' % key_name)
-    #
-    #     log.info('Method=compile_efforts Message="Getting segment data from redis"')
-    #
-    #     segment = redisclient.get('%s_segment' % key_name)
-    #     log.info('Method=compile_efforts Segment=%s' % segment)
-    #
-    #     neutral_zones = redisclient.smembers('%s_neutral_zones' % key_name)
-    #     log.info('Method=compile_efforts NeutralZones=%s' % neutral_zones)
-    #
-    #     if segment != None:
-    #         log.info(
-    #             'Method=compile_efforts Message="Getting main segment data from Strava" Segment=%s StartTime=%s EndTime=%s'
-    #             % (segment, starttime, endtime))
-    #         try:
-    #             segment_efforts = Strava().get_efforts(segment, starttime, endtime)
-    #             log.info('Method=compile_efforts Message="Data from Strava" ResultCount=%s' % (len(segment_efforts)))
-    #         except Exception as e:
-    #             log.exception('Method=compile_efforts Message="Strava call failed"')
-    #             raise(e)
-    #
-    #         for segment_effort in segment_efforts:
-    #             segment_effort['neutralised'] = {}
-    #
-    #         for neutral_zone in neutral_zones:
-    #             log.info(
-    #                 'Method=compile_efforts Message="Getting neutral zone segment data from Strava" Segment=%s StartTime=%s EndTime=%s'
-    #                 % (neutral_zone, starttime, endtime))
-    #
-    #             try:
-    #                 neutral_zone_efforts = Strava().get_efforts(neutral_zone, starttime, endtime)
-    #                 log.info('Method=compile_efforts Message="Data from Strava" ResultCount=%s' % (len(neutral_zone_efforts)))
-    #             except Exception as e:
-    #                 log.exception('Method=compile_efforts Message="Strava call failed"')
-    #                 raise (e)
-    #
-    #             for neutral_zone_effort in neutral_zone_efforts:
-    #                 for segment_effort in segment_efforts:
-    #                     if neutral_zone_effort['activity']['id'] == segment_effort['activity']['id']:
-    #                         segment_effort['neutralised'][neutral_zone] = neutral_zone_effort['elapsed_time']
-    #
-    #         divisions = redisclient.smembers('divisions')
-    #
-    #         for divisionId in divisions:
-    #             leagues[divisionId] = {}
-    #             leagues[divisionId]['results'] = self.compile_league(divisionId, segment_efforts)
-    #             leagues[divisionId]['name'] = redisclient.hget(divisionId, 'name')
-    #
-    #     else:
-    #         log.info('Method=compile_efforts Message="No SotW configured for the period" ResultSet=%s' % (key_name))
-    #
-    #     return leagues
 
-    # def compile_league(self, league_name, effort_list):
-    #     log.debug('Method=compile_league LeagueName=%s EffortListLength=%s' % (league_name, len(effort_list)))
-    #
-    #     members = redisclient.smembers(league_name + '_members')
-    #     log.debug('Method=compile_league LeagueMembers=%s' % members)
-    #     times = []
-    #     efforts = {}
-    #
-    #     # Compile dict of best efforts for each athlete in this league
-    #     for effort in effort_list:
-    #         athlete_id = effort['athlete']['id']
-    #         # log.debug('Method=compile_league Message="Finding effort for athlete" AthleteId=%s' % (athlete_id))
-    #
-    #         if str(athlete_id) in members:
-    #             if athlete_id in efforts:
-    #                 if effort['elapsed_time'] >= efforts[athlete_id]['elapsed_time']:
-    #                     continue
-    #
-    #             log.debug('Method=compile_league Message="Attributing effort to athlete" AthleteId=%s EffortId=%s' % (athlete_id, effort['id']))
-    #             efforts[athlete_id] = effort
-    #
-    #     # Enrich with athlete details, and collect list of times for ranking
-    #     for athlete_id, effort in efforts.items():
-    #         athlete = Athlete(athlete_id).get()
-    #
-    #         for k, v in athlete.items():
-    #             effort['athlete'][k] = v
-    #
+    def compile_results_table(self, division):
+        athlete_efforts = {}
+        times = []
+
+        # Find the best effort for each athlete in the division
+        for member in division.members:
+            for id, segment_effort in self.segment_efforts.items():
+                if segment_effort['athlete']['id'] == member:
+                    if member not in athlete_efforts or (member in athlete_efforts and athlete_efforts[member]['net_elapsed_time'] > segment_effort['net_elapsed_time']):
+                        athlete_efforts[member] = segment_effort
+
+        for athlete_id, effort in athlete_efforts.items():
+            times.append(effort['net_elapsed_time'])
+            effort['athlete'] = division.members[athlete_id].__dict__
+
+        # Remove duplicates
+        times = list(set(times))
+        times.sort()
+        rank = 1
+
+        for time in times:
+            joint = 0
+
+            for athlete_id, effort in athlete_efforts.items():
+                if effort['net_elapsed_time'] == time:
+                    effort['rank'] = rank
+                    effort['points'] = max(11 - rank, 0)
+                    joint = joint + 1
+
+            rank = rank + max(joint, 1)
+
+
+        self.results[division.id] = {'division': division.__dict__, 'efforts': athlete_efforts}
+
+        for athlete_id, athlete in self.results[division.id]['division']['members'].items():
+            self.results[division.id]['division']['members'][athlete_id] = athlete.__dict__
+
+        key_name = 'results_%s_%02d' % (self.year, self.week_number)
+        redisclient.hset(key_name, division.id, json.dumps(self.results[division.id]))
+
+
+    def compile_all_results(self):
+        divisions = Division.get_all()
+
+        for division_id, division in divisions.items():
+            self.compile_results_table(division)
+
+        self.sort_results()
+
+
+    def load_all_results(self):
+        key_name = 'results_%s_%02d' % (self.year, self.week_number)
+        raw_results = redisclient.hgetall(key_name)
+
+        if raw_results != None:
+            for division_id, table in raw_results.items():
+                self.results[division_id] = json.loads(table)
+
+        self.sort_results()
+
+
+    def sort_results(self):
+        for division_id, table in self.results.items():
+            self.results[division_id]['efforts'] = OrderedDict(sorted(table['efforts'].items(), key=lambda t: t[1]['rank']))
+
+
+
     #         corrected_time = effort['elapsed_time']
     #
     #         neutralised_times = []
@@ -333,4 +319,3 @@ class SegmentOfTheWeek:
     #
     #     log.debug('Method=compile_league Message="Completed compilation"' % ())
     #     return efforts
-    #

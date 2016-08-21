@@ -188,7 +188,6 @@ class AlbaSotwCore:
                    effort['corrected_time_formatted'],
                    effort['start_time_formatted']))
 
-            times.append(corrected_time)
 
         times = list(set(times))
         times.sort()
