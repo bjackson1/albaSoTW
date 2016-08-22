@@ -51,11 +51,11 @@ redis:
   segments:
     123456:
       name: 'Test Segment 1'
-      distance: 1000
+      distance: 1000.8
       total_elevation_gain: 100
     234567:
       name: 'Test Neutral Zone 1'
-      distance:  100
+      distance:  100.1
       total_elevation_gain: 10
   divisions:
     tdiv1:

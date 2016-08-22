@@ -20,73 +20,21 @@
 <div class="headerbar">Segment of the Week Efforts</div>
 <div class="mainbody">
 
-    {% if leagues != None %}
-        {% for set in result_sets %}
-            {% if this_week[0] == set.year and this_week[1] == set.week %}
-                {% if set.segment %}
-                    <a href="https://www.strava.com/segments/{{ set.segment.id }}"><h1>{{ set.segment.name }}</h1></a><br />
-                    Distance (metres): {{ set.segment.distance }}<br />
-                    Elevation Gain (metres): {{ set.segment.total_elevation_gain }}<br />
-                {% else %}
-                    <h1>No Segment Configured</h1>
-                {% endif %}
-            {% endif %}
-        {% endfor %}
-    {% endif %}
+    {% for challenge in sotw_challenges %}
+        {% if this_week[0] == challenge.year and this_week[1] == challenge.week_number %}
+            <a href="https://www.strava.com/segments/{{ challenge.main_segment.id }}"><h1>{{ challenge.main_segment.name }}</h1></a><br />
+            {{ (challenge.main_segment.distance / 1000)|round(1) }}km, {{ challenge.main_segment.total_elevation_gain }}m elevation<br />
+        {% endif %}
+    {% endfor %}
 
     <br />
     Select another week: <select id="result_set">
-    {% for set in result_sets %}
-        <option value="{{ set.year }}/{{ set.week }}" {% if this_week[0] == set.year and this_week[1] == set.week %}selected{% endif %}>{{ set.week_commencing }}, week {{ set.week }}{% if set.segment %} - {{ set.segment.name }}{% endif %}</option>
+    {% for challenge in sotw_challenges %}
+           <option value="{{ challenge.year }}/{{ challenge.week_number }}" {% if this_week[0] == challenge.year and this_week[1] == challenge.week_number %}selected{% endif %}>Week Commencing {{ challenge.week_commencing_formatted }}{% if challenge.main_segment %} - {{ challenge.main_segment.name }}{% endif %}</option>
     {% endfor %}
     </select><button id="open_result_set" onclick="location='/efforts/' + document.getElementById('result_set').value">Go</button>
 
-
-    {% if leagues != None %}
-        {% for league in leagues|sort() %}
-            <h1>{{ leagues[league].name }}</h1>
-            <table border="1" cellpadding="8" cellspacing="0">
-                <tr>
-                    <th>Rank</th>
-                    <th>Points</th>
-                    <th>Name</th>
-                    <!--th>Effort ID</th>
-                    <th>Activity ID</th>
-                    <th>Athlete ID</th-->
-                    <th>Corrected Time</th>
-                    <th>Neutralised Times</th>
-                    <th>Elapsed Time</th>
-                    <th>Pace (kph)</th>
-                    <th>Heart Rate</th>
-                    <th>Power</th>
-                    <th>Start Date/Time</th>
-                </tr>
-
-                {% for athlete_id, result in leagues[league].results.items() %}
-                    <tr> 
-                        <td>{{ result.rank }}</td>
-                        <td>{{ result.points }}</td>
-                        <td>
-                            <a href="https://www.strava.com/athletes/{{ result.athlete.id }}">{{ result.athlete['firstname'] }} {{ result.athlete['lastname'] }}</a>
-                        </td> 
-                        <td>{{ result.corrected_time_formatted }}</td>
-                        <td>{{ result.neutralised_times_formatted }}</td>
-                        <td>{{ result.elapsed_time_formatted }}</td>
-                        <td>{{ result.pace_kph }}</td>
-                        <td>{{ result.average_heartrate_formatted }}</td>
-                         <td>{{ result.average_watts_formatted }}</td>
-                         <td><a href="https://www.strava.com/activities/{{ result.activity.id }}#{{ result.id }}">{{ result.start_time_formatted }}</a></td>
-
-                    </tr>
-                {% endfor %}
-
-            </table>
-        {% endfor %}
-    {% else %}
-        <br />
-        <br />
-        There is no data available yet for this period.  Please ensure that a SoTW is configured for the selected week.
-    {% endif %}
+    {{ results_table|safe }}
 
 <br /><br />
     {% if user != None and user.user_metadata is defined and user.user_metadata['admin'] == 'true' %}

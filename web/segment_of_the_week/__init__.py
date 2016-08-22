@@ -5,6 +5,7 @@ from strava import Strava
 import json
 from collections import OrderedDict
 from division import Division
+from segment import Segment
 
 log = logging.getLogger('sotw.sotw')
 
@@ -17,6 +18,7 @@ class SegmentOfTheWeek:
         self.year, self.week_number = self.get_period(self.year, self.week_number)
 
         self.start_datetime, self.end_datetime = self.get_start_end_datetimes()
+        self.week_commencing_formatted = self.start_datetime.strftime('%d/%b/%Y')
         self.key_name = self.get_key_name()
 
         self.results = {}
@@ -122,6 +124,14 @@ class SegmentOfTheWeek:
         return year, week_number, main_segment_id, new_neutral_zone_ids
 
 
+    def load_segments(self):
+        self.main_segment = Segment(self.main_segment_id).__dict__
+        self.neutral_zone_segments = []
+
+        for neutral_zone_id in self.neutral_zone_ids:
+            self.neutral_zone_segments.append(Segment(neutral_zone_id).__dict__)
+
+
     def update_efforts(self):
         if self.main_segment_id != None:
             self.segment_efforts = {}
@@ -165,13 +175,20 @@ class SegmentOfTheWeek:
     def enrich_efforts(self):
         if self.segment_efforts != None:
             for segment_effort_id, segment_effort in self.segment_efforts.items():
+
+                segment_effort_start_datetime = datetime.strptime(segment_effort['start_date_local'], "%Y-%m-%dT%H:%M:%SZ")
+                segment_effort_end_datetime = segment_effort_start_datetime + timedelta(0, segment_effort['elapsed_time'])
+
                 # Calculate Neutralised Times
                 neutralised_times = []
                 neutralised_distances = []
 
                 for neutral_zone_effort in segment_effort['neutral_efforts']:
-                    neutralised_times.append(neutral_zone_effort['elapsed_time'])
-                    neutralised_distances.append(neutral_zone_effort['distance'])
+                    neutral_zone_effort_start_datetime = datetime.strptime(neutral_zone_effort['start_date_local'], "%Y-%m-%dT%H:%M:%SZ")
+
+                    if neutral_zone_effort_start_datetime > segment_effort_start_datetime and neutral_zone_effort_start_datetime < segment_effort_end_datetime:
+                        neutralised_times.append(neutral_zone_effort['elapsed_time'])
+                        neutralised_distances.append(neutral_zone_effort['distance'])
 
                 segment_effort['neutralised_times'] = neutralised_times
                 segment_effort['neutralised_distances'] = neutralised_distances
@@ -185,6 +202,27 @@ class SegmentOfTheWeek:
                 # Calculate pace
                 segment_effort['pace_kph'] = round((segment_effort['net_distance']/1000) / (segment_effort['net_elapsed_time']/60/60), 2)
                 segment_effort['pace_mph'] = round(segment_effort['pace_kph'] / 1.61, 2)
+
+
+                # Produce formatted fields
+                segment_effort['neutralised_times_formatted'] = ', '.join(map(str, neutralised_times))
+
+                minutes = int(segment_effort['elapsed_time'] / 60)
+                seconds = segment_effort['elapsed_time'] % 60
+                segment_effort['elapsed_time_formatted'] = "%d:%02d" % (minutes, seconds)
+
+                minutes = segment_effort['net_elapsed_time'] / 60
+                seconds = segment_effort['net_elapsed_time'] % 60
+                segment_effort['net_elapsed_time_formatted'] = "%d:%02d" % (minutes, seconds)
+
+                if 'average_heartrate' in segment_effort:
+                     segment_effort['average_heartrate_formatted'] = int(segment_effort['average_heartrate'])
+
+                if 'average_watts' in segment_effort:
+                    segment_effort['average_watts_formatted'] = int(segment_effort['average_watts'])
+
+                start_time_formatted = datetime.strptime(segment_effort['start_date_local'], "%Y-%m-%dT%H:%M:%SZ")
+                segment_effort['start_time_formatted'] = start_time_formatted.strftime('%a %d/%m, %H:%M')
 
 
     def compile_results_table(self, division):
@@ -228,6 +266,12 @@ class SegmentOfTheWeek:
         redisclient.hset(key_name, division.id, json.dumps(self.results[division.id]))
 
 
+    def update_all_results(self):
+        self.update_efforts()
+        self.enrich_efforts()
+        self.compile_all_results()
+
+
     def compile_all_results(self):
         divisions = Division.get_all()
 
@@ -253,69 +297,28 @@ class SegmentOfTheWeek:
             self.results[division_id]['efforts'] = OrderedDict(sorted(table['efforts'].items(), key=lambda t: t[1]['rank']))
 
 
+    @staticmethod
+    def get_all_challenges_data():
+        challenges = redisclient.keys('sotw_*_*_segment')
+        sotws = []
+        year = 0
+        week_number = 0
 
-    #         corrected_time = effort['elapsed_time']
-    #
-    #         neutralised_times = []
-    #         for key, value in effort['neutralised'].items():
-    #             corrected_time = corrected_time - value
-    #             neutralised_times.append(str(value))
-    #
-    #         effort['neutralised_times_formatted'] = ', '.join(neutralised_times)
-    #
-    #         minutes = int(effort['elapsed_time'] / 60)
-    #         seconds = effort['elapsed_time'] % 60
-    #         effort['elapsed_time_formatted'] = "%d:%02d" % (minutes, seconds)
-    #
-    #         minutes = corrected_time / 60
-    #         seconds = corrected_time % 60
-    #         effort['corrected_time'] = corrected_time
-    #         effort['corrected_time_formatted'] = "%d:%02d" % (minutes, seconds)
-    #
-    #         effort['pace_kph'] = round((effort['distance']/1000) / (effort['corrected_time']/60/60), 2)
-    #         effort['pace_mph'] = round((effort['distance']/1000) / (effort['corrected_time']/60/60) / 1.61, 2)
-    #
-    #         if 'average_heartrate' in effort:
-    #             effort['average_heartrate_formatted'] = int(effort['average_heartrate'])
-    #
-    #         if 'average_watts' in effort:
-    #             effort['average_watts_formatted'] = int(effort['average_watts'])
-    #
-    #         start_time_formatted = datetime.strptime(effort['start_date_local'], "%Y-%m-%dT%H:%M:%SZ")
-    #         effort['start_time_formatted'] = start_time_formatted.strftime('%a %d/%m, %H:%M')
-    #
-    #         log.debug(
-    #             'Method=compile_league Message="Recording elapsed time" AthleteId=%s EffortId=%s NeutralisedTimes="%s" ElapsedTime=%s CorrectedTime=%s StartTime="%s"'
-    #             % (athlete_id,
-    #                effort['id'],
-    #                effort['neutralised_times_formatted'],
-    #                effort['elapsed_time_formatted'],
-    #                effort['corrected_time_formatted'],
-    #                effort['start_time_formatted']))
-    #
-    #         times.append(corrected_time)
-    #
-    #     times = list(set(times))
-    #     times.sort()
-    #     rank = 1
-    #
-    #     # Assign a rank to each effort
-    #     for time in times:
-    #         joint = 0
-    #
-    #         for athlete_id, effort in efforts.items():
-    #             if effort['corrected_time'] == time:
-    #                 effort['rank'] = rank
-    #                 effort['points'] = max(11 - rank, 0)
-    #                 joint = joint + 1
-    #
-    #                 log.debug('Method=compile_league Message="Ranking athlete/effort" AthleteId=%s EffortId=%s Rank=%s Points=%s'
-    #                     % (athlete_id,
-    #                        effort['id'],
-    #                        effort['rank'],
-    #                        effort['points']))
-    #
-    #         rank = rank + max(joint, 1)
-    #
-    #     log.debug('Method=compile_league Message="Completed compilation"' % ())
-    #     return efforts
+        for challenge in challenges:
+            split = challenge.split('_')
+            year_field = split[1]
+            week_number_field = split[2]
+
+            if (type(year_field) is str and year_field.isdigit()):
+                year = int(year_field)
+
+            if (type(week_number_field) is str and week_number_field.isdigit()):
+                week_number = int(week_number_field)
+
+            sotw = SegmentOfTheWeek(year=year, week_number=week_number)
+            sotw.load_segments()
+            sotws.append(sotw.__dict__)
+
+        ssotws = sorted(sotws, key=lambda t: t['key_name'], reverse=True)
+
+        return ssotws

@@ -12,6 +12,35 @@ class tests_SegmentOfTheWeek(unittest.TestCase):
         self.test_instance = SegmentOfTheWeek()
 
 
+    def test__segment_of_the_week__get_all__whenCalledWithMockData__returnsAllSegmentOfTheWeekChallenges(self):
+        keys = redisclient.keys('sotw_*')
+
+        for key in keys:
+            redisclient.delete(key)
+
+        for i in range(1, 31):
+            key_name = '%s_%02d' % (2016, i)
+            redisclient.delete('%s_results' % key_name)
+            redisclient.delete('sotw_%s_segment' % key_name)
+            redisclient.delete('sotw_%s_neutral_zones' % key_name)
+
+            redisclient.delete('segment_1%04d' % i)
+            redisclient.delete('segment_2%04d' % i)
+            redisclient.delete('segment_3%04d' % i)
+
+            redisclient.set('sotw_%s_segment' % key_name, 10000 + i)
+            redisclient.sadd('sotw_%s_neutral_zones' % key_name, 20000 + i)
+            redisclient.sadd('sotw_%s_neutral_zones' % key_name, 30000 + i)
+
+            for j in range(1, 4):
+                redisclient.hset('segment_%s%04d' % (j, i), 'name', 'Test Segment %s%04d' % (j, i))
+                redisclient.hset('segment_%s%04d' % (j, i), 'distance', 1000)
+                redisclient.hset('segment_%s%04d' % (j, i), 'total_elevation_gain', 100)
+
+        challenges = SegmentOfTheWeek.get_all_challenges_data()
+        self.assertTrue(len(challenges) >= 30)
+
+
     def test__segment_of_the_week__get_period__whenCalledWithNoValues__returnsPeriodForCurrentWeek(self):
         expected_year, expected_week_number = self.get_current_year_and_week_number()
 
@@ -286,7 +315,7 @@ class tests_SegmentOfTheWeek(unittest.TestCase):
         sotw = SegmentOfTheWeek(2016, 30, 6216534)
 
         with mock.patch('strava.Strava.get_efforts') as mock_strava:
-            mock_strava.return_value = [{"id": "123456", "activity": {"id": "234567"}, "elapsed_time": 1200, "distance": 10000}]
+            mock_strava.return_value = [{"id": "123456", "activity": {"id": "234567"}, "elapsed_time": 1200, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'}]
 
             sotw.update_efforts()
             sotw.enrich_efforts()
@@ -307,8 +336,8 @@ class tests_SegmentOfTheWeek(unittest.TestCase):
 
         with mock.patch('strava.Strava.get_efforts') as mock_get_efforts, \
                 mock.patch('strava.Strava.get_neutralised_efforts') as mock_get_neutralised_efforts:
-            mock_get_efforts.return_value = [{"id": "123456", "activity": {"id": "234567"}, "elapsed_time": 1200, "distance": 10000}]
-            mock_get_neutralised_efforts.return_value = [{"id": "1234567", "activity": {"id": "234567"}, "elapsed_time": 12, "distance": 100}]
+            mock_get_efforts.return_value = [{"id": "123456", "activity": {"id": "234567"}, "elapsed_time": 1200, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'}]
+            mock_get_neutralised_efforts.return_value = [{"id": "1234567", "activity": {"id": "234567"}, "elapsed_time": 12, "distance": 100, 'start_date_local': '2016-06-20T20:01:00Z'}]
 
             sotw.update_efforts()
             sotw.enrich_efforts()
@@ -329,11 +358,11 @@ class tests_SegmentOfTheWeek(unittest.TestCase):
 
         with mock.patch('strava.Strava.get_efforts') as mock_get_efforts, \
                 mock.patch('strava.Strava.get_neutralised_efforts') as mock_get_neutralised_efforts:
-            mock_get_efforts.return_value = [{"id": "123456", "activity": {"id": "234567"}, "elapsed_time": 1200, "distance": 10000}]
+            mock_get_efforts.return_value = [{"id": "123456", "activity": {"id": "234567"}, "elapsed_time": 1200, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'}]
 
             # Given that this is mocked and there are two 'pretend' neutralised segments specified in the SegmentOfTheWeek instantiator, we can
             #   expect each neutralised segment here to be counted twice for each given effort
-            mock_get_neutralised_efforts.return_value = [{"id": "1234567", "activity": {"id": "234567"}, "elapsed_time": 12, "distance": 100}]
+            mock_get_neutralised_efforts.return_value = [{"id": "1234567", "activity": {"id": "234567"}, "elapsed_time": 12, "distance": 100, 'start_date_local': '2016-06-20T20:01:00Z'}]
 
             sotw.update_efforts()
             sotw.enrich_efforts()
@@ -349,20 +378,46 @@ class tests_SegmentOfTheWeek(unittest.TestCase):
         self.assertEqual(sotw.segment_efforts['234567']['neutralised_times'], [12, 12])
 
 
+    def test__segment_of_the_week__load_segment__whenCalledWithMockedSegmentAndMultipleNeutralisedZonesWithOneOutsideEffortTime__populatesAndEnrichesSegmentDataAndDeductsNeutralTimesExcludingDuplicateEffort(self):
+        sotw = SegmentOfTheWeek(2016, 30, 6216534, set([345678]))
+
+        with mock.patch('strava.Strava.get_efforts') as mock_get_efforts, \
+                mock.patch('strava.Strava.get_neutralised_efforts') as mock_get_neutralised_efforts:
+            mock_get_efforts.return_value = [{"id": "123456", "activity": {"id": "234567"}, "elapsed_time": 1200, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'}]
+
+            # Given that this is mocked and there are two 'pretend' neutralised segments specified in the SegmentOfTheWeek instantiator, we can
+            #   expect each neutralised segment here to be counted twice for each given effort
+            mock_get_neutralised_efforts.return_value = [{"id": "1234567", "activity": {"id": "234567"}, "elapsed_time": 12, "distance": 100, 'start_date_local': '2016-06-20T20:05:00Z'},
+                                                         {"id": "1234569", "activity": {"id": "234567"}, "elapsed_time": 12, "distance": 100, 'start_date_local': '2016-06-20T20:25:00Z'}]
+
+            sotw.update_efforts()
+            sotw.enrich_efforts()
+
+        self.assertTrue("pace_kph" in sotw.segment_efforts['234567'], "segment_effort['234567'] Dict does not contain the expected mocked element 'pace_kph'")
+        self.assertTrue("pace_mph" in sotw.segment_efforts['234567'], "segment_effort['234567'] Dict does not contain the expected mocked element 'pace_mph'")
+        self.assertTrue("net_elapsed_time" in sotw.segment_efforts['234567'], "segment_effort['234567'] Dict does not contain the expected mocked element 'net_elapsed_time'")
+        self.assertTrue("neutralised_times" in sotw.segment_efforts['234567'], "segment_effort['234567'] Dict does not contain the expected mocked element 'neutralised_times'")
+
+        self.assertEqual(sotw.segment_efforts['234567']['pace_kph'], 30.0)
+        self.assertEqual(sotw.segment_efforts['234567']['pace_mph'], 18.63)
+        # self.assertEqual(sotw.segment_efforts['234567']['net_elapsed_time'], 1188)
+        self.assertEqual(sotw.segment_efforts['234567']['neutralised_times'], [12])
+
+
     def test__segment_of_the_week__load_segment__whenCalledWithMockedSegmentAndMultipleEffortsAndNeutralisedZones__populatesAndEnrichesSegmentDataAndDeductsNeutralTimes(self):
         sotw = SegmentOfTheWeek(2016, 30, 6216534, set([345678, 456789]))
 
         with mock.patch('strava.Strava.get_efforts') as mock_get_efforts, \
                 mock.patch('strava.Strava.get_neutralised_efforts') as mock_get_neutralised_efforts:
-            mock_get_efforts.return_value = [{"id": "123456", "activity": {"id": "234567"}, "elapsed_time": 1200, "distance": 10000},
-                                             {"id": "123457", "activity": {"id": "234568"}, "elapsed_time": 1200, "distance": 10000},
-                                             {"id": "123458", "activity": {"id": "234569"}, "elapsed_time": 1200, "distance": 10000}]
+            mock_get_efforts.return_value = [{"id": "123456", "activity": {"id": "234567"}, "elapsed_time": 1200, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'},
+                                             {"id": "123457", "activity": {"id": "234568"}, "elapsed_time": 1200, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'},
+                                             {"id": "123458", "activity": {"id": "234569"}, "elapsed_time": 1200, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'}]
 
             # Given that this is mocked and there are two 'pretend' neutralised segments specified in the SegmentOfTheWeek instantiator, we can
             #   expect each neutralised segment here to be counted twice for each given effort
-            mock_get_neutralised_efforts.return_value = [{"id": "1234567", "activity": {"id": "234567"}, "elapsed_time": 12, "distance": 100},
-                                                         {"id": "1234567", "activity": {"id": "234568"}, "elapsed_time": 24, "distance": 100},
-                                                         {"id": "1234567", "activity": {"id": "234569"}, "elapsed_time": 48, "distance": 100}]
+            mock_get_neutralised_efforts.return_value = [{"id": "1234567", "activity": {"id": "234567"}, "elapsed_time": 12, "distance": 100, 'start_date_local': '2016-06-20T20:01:00Z'},
+                                                         {"id": "1234567", "activity": {"id": "234568"}, "elapsed_time": 24, "distance": 100, 'start_date_local': '2016-06-20T20:01:00Z'},
+                                                         {"id": "1234567", "activity": {"id": "234569"}, "elapsed_time": 48, "distance": 100, 'start_date_local': '2016-06-20T20:01:00Z'}]
 
             sotw.update_efforts()
             sotw.enrich_efforts()
@@ -416,12 +471,12 @@ class tests_SegmentOfTheWeek(unittest.TestCase):
                 mock.patch('strava.Strava.get_neutralised_efforts') as mock_get_neutralised_efforts:
 
             mock_get_efforts.return_value = [
-                {"id": "123456", "activity": {"id": "234567"}, "athlete": {"id": 10000002}, "elapsed_time": 1200, "distance": 10000}]
+                {"id": "123456", "activity": {"id": "234567"}, "athlete": {"id": 10000002}, "elapsed_time": 1200, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'}]
 
             # Given that this is mocked and there are two 'pretend' neutralised segments specified in the SegmentOfTheWeek instantiator, we can
             #   expect each neutralised segment here to be counted twice for each given effort
             mock_get_neutralised_efforts.return_value = [
-                {"id": "1234567", "activity": {"id": "234567"}, "elapsed_time": 12, "distance": 100}]
+                {"id": "1234567", "activity": {"id": "234567"}, "elapsed_time": 12, "distance": 100, 'start_date_local': '2016-06-20T20:01:00Z'}]
 
             sotw.update_efforts()
             sotw.enrich_efforts()
@@ -444,16 +499,16 @@ class tests_SegmentOfTheWeek(unittest.TestCase):
                 mock.patch('strava.Strava.get_neutralised_efforts') as mock_get_neutralised_efforts:
 
             mock_get_efforts.return_value = [
-                {"id": "1234567", "activity": {"id": "2345678"}, "athlete": {"id": 10000002}, "elapsed_time": 1200, "distance": 10000},
-                {"id": "1234568", "activity": {"id": "2345679"}, "athlete": {"id": 10000002}, "elapsed_time": 1100, "distance": 10000},
-                {"id": "1234569", "activity": {"id": "2345670"}, "athlete": {"id": 10000002}, "elapsed_time": 1300, "distance": 10000}]
+                {"id": "1234567", "activity": {"id": "2345678"}, "athlete": {"id": 10000002}, "elapsed_time": 1200, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'},
+                {"id": "1234568", "activity": {"id": "2345679"}, "athlete": {"id": 10000002}, "elapsed_time": 1100, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'},
+                {"id": "1234569", "activity": {"id": "2345670"}, "athlete": {"id": 10000002}, "elapsed_time": 1300, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'}]
 
             # Given that this is mocked and there are two 'pretend' neutralised segments specified in the SegmentOfTheWeek instantiator, we can
             #   expect each neutralised segment here to be counted twice for each given effort
             mock_get_neutralised_efforts.return_value = [
-                {"id": "12345678", "activity": {"id": "2345678"}, "elapsed_time": 12, "distance": 100},
-                {"id": "12345679", "activity": {"id": "2345679"}, "elapsed_time": 12, "distance": 100},
-                {"id": "12345670", "activity": {"id": "2345670"}, "elapsed_time": 12, "distance": 100}]
+                {"id": "12345678", "activity": {"id": "2345678"}, "elapsed_time": 12, "distance": 100, 'start_date_local': '2016-06-20T20:01:00Z'},
+                {"id": "12345679", "activity": {"id": "2345679"}, "elapsed_time": 12, "distance": 100, 'start_date_local': '2016-06-20T20:01:00Z'},
+                {"id": "12345670", "activity": {"id": "2345670"}, "elapsed_time": 12, "distance": 100, 'start_date_local': '2016-06-20T20:01:00Z'}]
 
             sotw.update_efforts()
             sotw.enrich_efforts()
@@ -469,6 +524,7 @@ class tests_SegmentOfTheWeek(unittest.TestCase):
 
 
     def test__segment_of_the_week__compile_results_table__whenCalledWithSegmentOfTheWeekAndMultipleEffortsFromMultipleAthletes_returnsTableWithRankedEfforts(self):
+        self.setup_test_data()
         from division import Division
         sotw = SegmentOfTheWeek(2016, 30, 6216534, set([345678, 456789]))
 
@@ -476,22 +532,22 @@ class tests_SegmentOfTheWeek(unittest.TestCase):
                 mock.patch('strava.Strava.get_neutralised_efforts') as mock_get_neutralised_efforts:
 
             mock_get_efforts.return_value = [
-                {"id": "1234565", "activity": {"id": "2345676"}, "athlete": {"id": 10000001}, "elapsed_time": 1100, "distance": 10000},
-                {"id": "1234566", "activity": {"id": "2345677"}, "athlete": {"id": 10000003}, "elapsed_time": 1050, "distance": 10000},
-                {"id": "1234567", "activity": {"id": "2345678"}, "athlete": {"id": 10000002}, "elapsed_time": 1200, "distance": 10000},
-                {"id": "1234568", "activity": {"id": "2345679"}, "athlete": {"id": 10000002}, "elapsed_time": 1100, "distance": 10000},
-                {"id": "1234569", "activity": {"id": "2345670"}, "athlete": {"id": 10000002}, "elapsed_time": 1300, "distance": 10000},
-                {"id": "1234560", "activity": {"id": "2345671"}, "athlete": {"id": 10000004}, "elapsed_time": 1400, "distance": 10000}]
+                {"id": "1234565", "activity": {"id": "2345676"}, "athlete": {"id": 10000001}, "elapsed_time": 1100, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'},
+                {"id": "1234566", "activity": {"id": "2345677"}, "athlete": {"id": 10000003}, "elapsed_time": 1050, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'},
+                {"id": "1234567", "activity": {"id": "2345678"}, "athlete": {"id": 10000002}, "elapsed_time": 1200, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'},
+                {"id": "1234568", "activity": {"id": "2345679"}, "athlete": {"id": 10000002}, "elapsed_time": 1100, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'},
+                {"id": "1234569", "activity": {"id": "2345670"}, "athlete": {"id": 10000002}, "elapsed_time": 1300, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'},
+                {"id": "1234560", "activity": {"id": "2345671"}, "athlete": {"id": 10000004}, "elapsed_time": 1400, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'}]
 
             # Given that this is mocked and there are two 'pretend' neutralised segments specified in the SegmentOfTheWeek instantiator, we can
             #   expect each neutralised segment here to be counted twice for each given effort
             mock_get_neutralised_efforts.return_value = [
-                {"id": "12345676", "activity": {"id": "2345676"}, "elapsed_time": 12, "distance": 100},
-                {"id": "12345677", "activity": {"id": "2345677"}, "elapsed_time": 12, "distance": 100},
-                {"id": "12345678", "activity": {"id": "2345678"}, "elapsed_time": 12, "distance": 100},
-                {"id": "12345679", "activity": {"id": "2345679"}, "elapsed_time": 12, "distance": 100},
-                {"id": "12345670", "activity": {"id": "2345670"}, "elapsed_time": 12, "distance": 100},
-                {"id": "12345671", "activity": {"id": "2345671"}, "elapsed_time": 12, "distance": 100}]
+                {"id": "12345676", "activity": {"id": "2345676"}, "elapsed_time": 12, "distance": 100, 'start_date_local': '2016-06-20T20:01:00Z'},
+                {"id": "12345677", "activity": {"id": "2345677"}, "elapsed_time": 12, "distance": 100, 'start_date_local': '2016-06-20T20:01:00Z'},
+                {"id": "12345678", "activity": {"id": "2345678"}, "elapsed_time": 12, "distance": 100, 'start_date_local': '2016-06-20T20:01:00Z'},
+                {"id": "12345679", "activity": {"id": "2345679"}, "elapsed_time": 12, "distance": 100, 'start_date_local': '2016-06-20T20:01:00Z'},
+                {"id": "12345670", "activity": {"id": "2345670"}, "elapsed_time": 12, "distance": 100, 'start_date_local': '2016-06-20T20:01:00Z'},
+                {"id": "12345671", "activity": {"id": "2345671"}, "elapsed_time": 12, "distance": 100, 'start_date_local': '2016-06-20T20:01:00Z'}]
 
             sotw.update_efforts()
             sotw.enrich_efforts()
@@ -556,66 +612,64 @@ class tests_SegmentOfTheWeek(unittest.TestCase):
                 mock.patch('strava.Strava.get_neutralised_efforts') as mock_get_neutralised_efforts:
 
             mock_get_efforts.return_value = [
-                {"id": "1000", "activity": {"id": "2000"}, "athlete": {"id": 3000}, "elapsed_time": 987, "distance": 10000},
-                {"id": "1001", "activity": {"id": "2001"}, "athlete": {"id": 3001}, "elapsed_time": 1102, "distance": 10000},
-                {"id": "1002", "activity": {"id": "2002"}, "athlete": {"id": 3002}, "elapsed_time": 1005, "distance": 10000},
-                {"id": "1003", "activity": {"id": "2003"}, "athlete": {"id": 3003}, "elapsed_time": 1007, "distance": 10000},
-                {"id": "1004", "activity": {"id": "2004"}, "athlete": {"id": 3004}, "elapsed_time": 1404, "distance": 10000},
-                {"id": "1005", "activity": {"id": "2005"}, "athlete": {"id": 3005}, "elapsed_time": 1200, "distance": 10000},
-                {"id": "1006", "activity": {"id": "2006"}, "athlete": {"id": 3006}, "elapsed_time": 1090, "distance": 10000},
-                {"id": "1007", "activity": {"id": "2007"}, "athlete": {"id": 3007}, "elapsed_time": 1040, "distance": 10000},
-                {"id": "1008", "activity": {"id": "2008"}, "athlete": {"id": 3008}, "elapsed_time": 1250, "distance": 10000},
-                {"id": "1009", "activity": {"id": "2009"}, "athlete": {"id": 3009}, "elapsed_time": 1600, "distance": 10000},
-                {"id": "1010", "activity": {"id": "2010"}, "athlete": {"id": 3010}, "elapsed_time": 1320, "distance": 10000},
-                {"id": "1011", "activity": {"id": "2011"}, "athlete": {"id": 3011}, "elapsed_time": 1230, "distance": 10000},
-                {"id": "1012", "activity": {"id": "2012"}, "athlete": {"id": 3012}, "elapsed_time": 1234, "distance": 10000},
-                {"id": "1013", "activity": {"id": "2013"}, "athlete": {"id": 3013}, "elapsed_time": 1100, "distance": 10000},
-                {"id": "1014", "activity": {"id": "2014"}, "athlete": {"id": 3014}, "elapsed_time": 1290, "distance": 10000},
-                {"id": "1015", "activity": {"id": "2015"}, "athlete": {"id": 3015}, "elapsed_time": 1350, "distance": 10000},
-                {"id": "1016", "activity": {"id": "2016"}, "athlete": {"id": 3016}, "elapsed_time": 1400, "distance": 10000},
-                {"id": "1017", "activity": {"id": "2017"}, "athlete": {"id": 3017}, "elapsed_time": 1220, "distance": 10000},
-                {"id": "1018", "activity": {"id": "2018"}, "athlete": {"id": 3018}, "elapsed_time": 1410, "distance": 10000},
-                {"id": "1019", "activity": {"id": "2019"}, "athlete": {"id": 3019}, "elapsed_time": 1500, "distance": 10000},
-                {"id": "1020", "activity": {"id": "2020"}, "athlete": {"id": 3020}, "elapsed_time": 1402, "distance": 10000},
-                {"id": "1021", "activity": {"id": "2021"}, "athlete": {"id": 3021}, "elapsed_time": 1450, "distance": 10000},
-                {"id": "1022", "activity": {"id": "2022"}, "athlete": {"id": 3022}, "elapsed_time": 1390, "distance": 10000},
-                {"id": "1023", "activity": {"id": "2023"}, "athlete": {"id": 3023}, "elapsed_time": 1260, "distance": 10000},
-                {"id": "1024", "activity": {"id": "2024"}, "athlete": {"id": 3024}, "elapsed_time": 1420, "distance": 10000},
-                {"id": "1025", "activity": {"id": "2025"}, "athlete": {"id": 3025}, "elapsed_time": 1190, "distance": 10000}]
+                {"id": "1000", "activity": {"id": "2000"}, "athlete": {"id": 3000}, "elapsed_time": 987, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'},
+                {"id": "1001", "activity": {"id": "2001"}, "athlete": {"id": 3001}, "elapsed_time": 1102, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'},
+                {"id": "1002", "activity": {"id": "2002"}, "athlete": {"id": 3002}, "elapsed_time": 1005, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'},
+                {"id": "1003", "activity": {"id": "2003"}, "athlete": {"id": 3003}, "elapsed_time": 1007, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'},
+                {"id": "1004", "activity": {"id": "2004"}, "athlete": {"id": 3004}, "elapsed_time": 1404, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'},
+                {"id": "1005", "activity": {"id": "2005"}, "athlete": {"id": 3005}, "elapsed_time": 1200, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'},
+                {"id": "1006", "activity": {"id": "2006"}, "athlete": {"id": 3006}, "elapsed_time": 1090, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'},
+                {"id": "1007", "activity": {"id": "2007"}, "athlete": {"id": 3007}, "elapsed_time": 1040, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'},
+                {"id": "1008", "activity": {"id": "2008"}, "athlete": {"id": 3008}, "elapsed_time": 1250, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'},
+                {"id": "1009", "activity": {"id": "2009"}, "athlete": {"id": 3009}, "elapsed_time": 1600, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'},
+                {"id": "1010", "activity": {"id": "2010"}, "athlete": {"id": 3010}, "elapsed_time": 1320, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'},
+                {"id": "1011", "activity": {"id": "2011"}, "athlete": {"id": 3011}, "elapsed_time": 1230, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'},
+                {"id": "1012", "activity": {"id": "2012"}, "athlete": {"id": 3012}, "elapsed_time": 1234, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'},
+                {"id": "1013", "activity": {"id": "2013"}, "athlete": {"id": 3013}, "elapsed_time": 1100, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'},
+                {"id": "1014", "activity": {"id": "2014"}, "athlete": {"id": 3014}, "elapsed_time": 1290, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'},
+                {"id": "1015", "activity": {"id": "2015"}, "athlete": {"id": 3015}, "elapsed_time": 1350, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'},
+                {"id": "1016", "activity": {"id": "2016"}, "athlete": {"id": 3016}, "elapsed_time": 1400, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'},
+                {"id": "1017", "activity": {"id": "2017"}, "athlete": {"id": 3017}, "elapsed_time": 1220, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'},
+                {"id": "1018", "activity": {"id": "2018"}, "athlete": {"id": 3018}, "elapsed_time": 1410, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'},
+                {"id": "1019", "activity": {"id": "2019"}, "athlete": {"id": 3019}, "elapsed_time": 1500, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'},
+                {"id": "1020", "activity": {"id": "2020"}, "athlete": {"id": 3020}, "elapsed_time": 1402, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'},
+                {"id": "1021", "activity": {"id": "2021"}, "athlete": {"id": 3021}, "elapsed_time": 1450, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'},
+                {"id": "1022", "activity": {"id": "2022"}, "athlete": {"id": 3022}, "elapsed_time": 1390, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'},
+                {"id": "1023", "activity": {"id": "2023"}, "athlete": {"id": 3023}, "elapsed_time": 1260, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'},
+                {"id": "1024", "activity": {"id": "2024"}, "athlete": {"id": 3024}, "elapsed_time": 1420, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'},
+                {"id": "1025", "activity": {"id": "2025"}, "athlete": {"id": 3025}, "elapsed_time": 1190, "distance": 10000, 'start_date_local': '2016-06-20T20:00:00Z'}]
 
             # Given that this is mocked and there are two 'pretend' neutralised segments specified in the SegmentOfTheWeek instantiator, we can
             #   expect each neutralised segment here to be counted twice for each given effort
             mock_get_neutralised_efforts.return_value = [
-                {"id": "1100", "activity": {"id": "2000"}, "athlete": {"id": 3000}, "elapsed_time": 10, "distance": 100},
-                {"id": "1101", "activity": {"id": "2001"}, "athlete": {"id": 3001}, "elapsed_time": 70, "distance": 100},
-                {"id": "1102", "activity": {"id": "2002"}, "athlete": {"id": 3002}, "elapsed_time": 30, "distance": 100},
-                {"id": "1103", "activity": {"id": "2003"}, "athlete": {"id": 3003}, "elapsed_time": 112, "distance": 100},
-                {"id": "1104", "activity": {"id": "2004"}, "athlete": {"id": 3004}, "elapsed_time": 17, "distance": 100},
-                {"id": "1105", "activity": {"id": "2005"}, "athlete": {"id": 3005}, "elapsed_time": 14, "distance": 100},
-                {"id": "1106", "activity": {"id": "2006"}, "athlete": {"id": 3006}, "elapsed_time": 109, "distance": 100},
-                {"id": "1107", "activity": {"id": "2007"}, "athlete": {"id": 3007}, "elapsed_time": 23, "distance": 100},
-                {"id": "1108", "activity": {"id": "2008"}, "athlete": {"id": 3008}, "elapsed_time": 26, "distance": 100},
-                {"id": "1109", "activity": {"id": "2009"}, "athlete": {"id": 3009}, "elapsed_time": 73, "distance": 100},
-                {"id": "1110", "activity": {"id": "2010"}, "athlete": {"id": 3010}, "elapsed_time": 44, "distance": 100},
-                {"id": "1111", "activity": {"id": "2011"}, "athlete": {"id": 3011}, "elapsed_time": 105, "distance": 100},
-                {"id": "1112", "activity": {"id": "2012"}, "athlete": {"id": 3012}, "elapsed_time": 67, "distance": 100},
-                {"id": "1113", "activity": {"id": "2013"}, "athlete": {"id": 3013}, "elapsed_time": 81, "distance": 100},
-                {"id": "1114", "activity": {"id": "2014"}, "athlete": {"id": 3014}, "elapsed_time": 20, "distance": 100},
-                {"id": "1115", "activity": {"id": "2015"}, "athlete": {"id": 3015}, "elapsed_time": 50, "distance": 100},
-                {"id": "1116", "activity": {"id": "2016"}, "athlete": {"id": 3016}, "elapsed_time": 100, "distance": 100},
-                {"id": "1117", "activity": {"id": "2017"}, "athlete": {"id": 3017}, "elapsed_time": 192, "distance": 100},
-                {"id": "1118", "activity": {"id": "2018"}, "athlete": {"id": 3018}, "elapsed_time": 3, "distance": 100},
-                {"id": "1119", "activity": {"id": "2019"}, "athlete": {"id": 3019}, "elapsed_time": 90, "distance": 100},
-                {"id": "1120", "activity": {"id": "2020"}, "athlete": {"id": 3020}, "elapsed_time": 34, "distance": 100},
-                {"id": "1121", "activity": {"id": "2021"}, "athlete": {"id": 3021}, "elapsed_time": 17, "distance": 100},
-                {"id": "1122", "activity": {"id": "2022"}, "athlete": {"id": 3022}, "elapsed_time": 58, "distance": 100},
-                {"id": "1123", "activity": {"id": "2023"}, "athlete": {"id": 3023}, "elapsed_time": 62, "distance": 100},
-                {"id": "1124", "activity": {"id": "2024"}, "athlete": {"id": 3024}, "elapsed_time": 11, "distance": 100},
-                {"id": "1125", "activity": {"id": "2025"}, "athlete": {"id": 3025}, "elapsed_time": 94, "distance": 100}]
+                {"id": "1100", "activity": {"id": "2000"}, "athlete": {"id": 3000}, 'start_date_local': '2016-06-20T20:01:00Z', "elapsed_time": 10, "distance": 100},
+                {"id": "1101", "activity": {"id": "2001"}, "athlete": {"id": 3001}, 'start_date_local': '2016-06-20T20:01:00Z', "elapsed_time": 70, "distance": 100},
+                {"id": "1102", "activity": {"id": "2002"}, "athlete": {"id": 3002}, 'start_date_local': '2016-06-20T20:01:00Z', "elapsed_time": 30, "distance": 100},
+                {"id": "1103", "activity": {"id": "2003"}, "athlete": {"id": 3003}, 'start_date_local': '2016-06-20T20:01:00Z', "elapsed_time": 112, "distance": 100},
+                {"id": "1104", "activity": {"id": "2004"}, "athlete": {"id": 3004}, 'start_date_local': '2016-06-20T20:01:00Z', "elapsed_time": 17, "distance": 100},
+                {"id": "1105", "activity": {"id": "2005"}, "athlete": {"id": 3005}, 'start_date_local': '2016-06-20T20:01:00Z', "elapsed_time": 14, "distance": 100},
+                {"id": "1106", "activity": {"id": "2006"}, "athlete": {"id": 3006}, 'start_date_local': '2016-06-20T20:01:00Z', "elapsed_time": 109, "distance": 100},
+                {"id": "1107", "activity": {"id": "2007"}, "athlete": {"id": 3007}, 'start_date_local': '2016-06-20T20:01:00Z', "elapsed_time": 23, "distance": 100},
+                {"id": "1108", "activity": {"id": "2008"}, "athlete": {"id": 3008}, 'start_date_local': '2016-06-20T20:01:00Z', "elapsed_time": 26, "distance": 100},
+                {"id": "1109", "activity": {"id": "2009"}, "athlete": {"id": 3009}, 'start_date_local': '2016-06-20T20:01:00Z', "elapsed_time": 73, "distance": 100},
+                {"id": "1110", "activity": {"id": "2010"}, "athlete": {"id": 3010}, 'start_date_local': '2016-06-20T20:01:00Z', "elapsed_time": 44, "distance": 100},
+                {"id": "1111", "activity": {"id": "2011"}, "athlete": {"id": 3011}, 'start_date_local': '2016-06-20T20:01:00Z', "elapsed_time": 105, "distance": 100},
+                {"id": "1112", "activity": {"id": "2012"}, "athlete": {"id": 3012}, 'start_date_local': '2016-06-20T20:01:00Z', "elapsed_time": 67, "distance": 100},
+                {"id": "1113", "activity": {"id": "2013"}, "athlete": {"id": 3013}, 'start_date_local': '2016-06-20T20:01:00Z', "elapsed_time": 81, "distance": 100},
+                {"id": "1114", "activity": {"id": "2014"}, "athlete": {"id": 3014}, 'start_date_local': '2016-06-20T20:01:00Z', "elapsed_time": 20, "distance": 100},
+                {"id": "1115", "activity": {"id": "2015"}, "athlete": {"id": 3015}, 'start_date_local': '2016-06-20T20:01:00Z', "elapsed_time": 50, "distance": 100},
+                {"id": "1116", "activity": {"id": "2016"}, "athlete": {"id": 3016}, 'start_date_local': '2016-06-20T20:01:00Z', "elapsed_time": 100, "distance": 100},
+                {"id": "1117", "activity": {"id": "2017"}, "athlete": {"id": 3017}, 'start_date_local': '2016-06-20T20:01:00Z', "elapsed_time": 192, "distance": 100},
+                {"id": "1118", "activity": {"id": "2018"}, "athlete": {"id": 3018}, 'start_date_local': '2016-06-20T20:01:00Z', "elapsed_time": 3, "distance": 100},
+                {"id": "1119", "activity": {"id": "2019"}, "athlete": {"id": 3019}, 'start_date_local': '2016-06-20T20:01:00Z', "elapsed_time": 90, "distance": 100},
+                {"id": "1120", "activity": {"id": "2020"}, "athlete": {"id": 3020}, 'start_date_local': '2016-06-20T20:01:00Z', "elapsed_time": 34, "distance": 100},
+                {"id": "1121", "activity": {"id": "2021"}, "athlete": {"id": 3021}, 'start_date_local': '2016-06-20T20:01:00Z', "elapsed_time": 17, "distance": 100},
+                {"id": "1122", "activity": {"id": "2022"}, "athlete": {"id": 3022}, 'start_date_local': '2016-06-20T20:01:00Z', "elapsed_time": 58, "distance": 100},
+                {"id": "1123", "activity": {"id": "2023"}, "athlete": {"id": 3023}, 'start_date_local': '2016-06-20T20:01:00Z', "elapsed_time": 62, "distance": 100},
+                {"id": "1124", "activity": {"id": "2024"}, "athlete": {"id": 3024}, 'start_date_local': '2016-06-20T20:01:00Z', "elapsed_time": 11, "distance": 100},
+                {"id": "1125", "activity": {"id": "2025"}, "athlete": {"id": 3025}, 'start_date_local': '2016-06-20T20:01:00Z', "elapsed_time": 94, "distance": 100}]
 
-            sotw.update_efforts()
-            sotw.enrich_efforts()
-            sotw.compile_all_results()
+            sotw.update_all_results()
 
             # for division_id, table in sotw.results.items():
             #     for athlete_id, effort in table['efforts'].items():

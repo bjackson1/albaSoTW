@@ -1,0 +1,42 @@
+    {% if divisions != None %}
+        {% for division in divisions|sort() %}
+            <h1>{{ divisions[division].division.name }}</h1>
+            <table border="1" cellpadding="8" cellspacing="0">
+                <tr>
+                    <th>Rank</th>
+                    <th>Points</th>
+                    <th>Name</th>
+                    <!--th>Effort ID</th>
+                    <th>Activity ID</th>
+                    <th>Athlete ID</th-->
+                    <th>Corrected Time</th>
+                    <th>Neutralised Times</th>
+                    <th>Elapsed Time</th>
+                    <th>Pace (kph)</th>
+                    <th>Heart Rate</th>
+                    <th>Power</th>
+                    <th>Start Date/Time</th>
+                </tr>
+
+                {% for athlete_id, result in divisions[division].efforts.items() %} 
+                    <tr>
+                        <td>{{ result.rank }}</td>
+                        <td>{{ result.points }}</td> 
+                        <td><a href="https://www.strava.com/athletes/{{ result.athlete.id }}">{{ result.athlete['firstname'] }} {{ result.athlete['lastname'] }}</a> </td>  
+                        <td>{{ result.net_elapsed_time_formatted }}</td>
+                        <td>{{ result.neutralised_times_formatted }}</td>
+                        <td>{{ result.elapsed_time_formatted }}</td>
+                        <td>{{ result.pace_kph }}</td>
+                        <td>{{ result.average_heartrate_formatted }}</td> 
+                        <td>{{ result.average_watts_formatted }}</td> 
+                        <td><a href="https://www.strava.com/activities/{{ result.activity.id }}#{{ result.id }}">{{ result.start_time_formatted }}</a></td>
+                    </tr>
+                {% endfor %}
+
+            </table>
+        {% endfor %}
+    {% else %}
+        <br />
+        <br />
+        There is no data available yet for this period.  Please ensure that a SoTW is configured for the selected week.
+    {% endif %}

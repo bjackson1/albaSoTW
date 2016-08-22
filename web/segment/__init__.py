@@ -3,28 +3,42 @@ from storage import redisclient
 
 class Segment:
     def __init__(self, segment_id):
-        self.segment_id = segment_id
-        self.redis_key = 'segment_%s' % segment_id
+        self.id = segment_id
+        self.key_name = 'segment_%s' % self.id
+        self.load()
 
-        self.get_from_redis()
 
-        if not self.segment_object:
-            self.get_from_strava()
-            self.set_in_redis()
-            self.get_from_redis()
+    def load(self):
+        raw_data = redisclient.hgetall(self.key_name)
+        to_save = False
 
-        self.segment_object['id'] = self.segment_id
+        if raw_data == {}:
+            raw_data = self.get_from_strava()
+            to_save = True
 
-    def get(self):
-        return self.segment_object
+        self.load_data(raw_data)
 
-    def get_from_redis(self):
-        self.segment_object = redisclient.hgetall(self.redis_key)
+        if to_save:
+            self.save()
+
+
+    def load_data(self, raw_data):
+        if raw_data != None:
+            if 'name' in raw_data:
+                self.name = raw_data['name']
+
+            if 'distance' in raw_data:
+                self.distance = float(raw_data['distance'])
+
+            if 'total_elevation_gain' in raw_data:
+                self.total_elevation_gain = float(raw_data['total_elevation_gain'])
+
 
     def get_from_strava(self):
-        self.segment_object = Strava().get_segment(self.segment_id)
+        return Strava().get_segment(self.id)
 
-    def set_in_redis(self):
-        redisclient.hset(self.redis_key, 'name', self.segment_object['name'])
-        redisclient.hset(self.redis_key, 'distance', self.segment_object['distance'])
-        redisclient.hset(self.redis_key, 'total_elevation_gain', self.segment_object['total_elevation_gain'])
+
+    def save(self):
+        redisclient.hset(self.key_name, 'name', self.name)
+        redisclient.hset(self.key_name, 'distance', self.distance)
+        redisclient.hset(self.key_name, 'total_elevation_gain', self.total_elevation_gain)
