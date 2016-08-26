@@ -2,15 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="84f8bd39-ffdb-4db9-84cb-f82ca30e2971" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/web/core/__init__.py" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/segment/__init__.py" afterPath="$PROJECT_DIR$/web/segment/__init__.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/segment/tests_segment.py" afterPath="$PROJECT_DIR$/web/segment/tests_segment.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/segment_of_the_week/__init__.py" afterPath="$PROJECT_DIR$/web/segment_of_the_week/__init__.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/segment_of_the_week/tests_segment_of_the_week.py" afterPath="$PROJECT_DIR$/web/segment_of_the_week/tests_segment_of_the_week.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/test_seed_data.yml" afterPath="$PROJECT_DIR$/web/test_seed_data.yml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/view/__init__.py" afterPath="$PROJECT_DIR$/web/view/__init__.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/view/templates/efforts.html" afterPath="$PROJECT_DIR$/web/view/templates/efforts.html" />
     </list>
     <ignored path="albaSoTW.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -34,8 +29,8 @@
       <file leaf-file-name="tests_segment.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web/segment/tests_segment.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="363">
-              <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+            <state relative-caret-position="448">
+              <caret line="28" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -43,11 +38,33 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="requirements.txt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/requirements.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="3" selection-end-column="8" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/segment/__init__.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="240">
+              <caret line="15" column="45" selection-start-line="15" selection-start-column="45" selection-end-line="15" selection-end-column="45" />
+              <folding>
+                <element signature="e#0#25#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="__init__.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/web/view/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="113" column="46" selection-start-line="113" selection-start-column="46" selection-end-line="113" selection-end-column="46" />
+            <state relative-caret-position="347">
+              <caret line="246" column="0" selection-start-line="246" selection-start-column="0" selection-end-line="246" selection-end-column="0" />
               <folding>
                 <element signature="e#1#85#0" expanded="true" />
               </folding>
@@ -55,13 +72,57 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="__init__.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="efforts.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/view/templates/efforts.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="64">
+              <caret line="4" column="59" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="59" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="run_server.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/run_server.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="32">
+              <caret line="2" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#20#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/storage/__init__.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="160">
+              <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web/segment_of_the_week/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4832">
-              <caret line="302" column="0" selection-start-line="302" selection-start-column="0" selection-end-line="302" selection-end-column="0" />
+            <state relative-caret-position="1424">
+              <caret line="89" column="0" selection-start-line="89" selection-start-column="0" selection-end-line="103" selection-end-column="32" />
               <folding>
                 <element signature="e#0#46#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="tests_segment_of_the_week.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/segment_of_the_week/tests_segment_of_the_week.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2640">
+              <caret line="165" column="26" selection-start-line="165" selection-start-column="26" selection-end-line="165" selection-end-column="26" />
+              <folding>
+                <element signature="e#0#15#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -128,11 +189,11 @@
         <option value="$PROJECT_DIR$/web/test_seed_data.yml" />
         <option value="$PROJECT_DIR$/web/segment/__init__.py" />
         <option value="$PROJECT_DIR$/web/segment/tests_segment.py" />
-        <option value="$PROJECT_DIR$/web/segment_of_the_week/__init__.py" />
         <option value="$PROJECT_DIR$/web/view/templates/results_table.html" />
         <option value="$PROJECT_DIR$/web/view/templates/efforts.html" />
-        <option value="$PROJECT_DIR$/web/view/__init__.py" />
         <option value="$PROJECT_DIR$/web/segment_of_the_week/tests_segment_of_the_week.py" />
+        <option value="$PROJECT_DIR$/web/segment_of_the_week/__init__.py" />
+        <option value="$PROJECT_DIR$/web/view/__init__.py" />
       </list>
     </option>
   </component>
@@ -181,34 +242,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope">
-        <subPane subId="Default">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="albaSoTW">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="albaSoTW">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="templates">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -255,186 +289,55 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="view" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="albaSoTW" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="albaSoTW" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="view" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="templates" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="albaSoTW" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="albaSoTW" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="strava" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="albaSoTW" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="albaSoTW" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="storage" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="albaSoTW" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="albaSoTW" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="segment_of_the_week" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="albaSoTW" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="albaSoTW" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="segment" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="albaSoTW" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="albaSoTW" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="load_data" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="albaSoTW" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="albaSoTW" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="division" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="albaSoTW" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="albaSoTW" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="athlete" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="albaSoTW" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="albaSoTW" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="redis" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
+      <pane id="Scope">
+        <subPane subId="Default">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="albaSoTW">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="albaSoTW">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="templates">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../accelerometer-receiver-service" />
-    <property name="settings.editor.selected.configurable" value="preferences.sourceCode" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../openid_authn" />
+    <property name="settings.editor.selected.configurable" value="org.jetbrains.plugins.ipnb.configuration.IpnbConfigurable" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="FullScreen" value="true" />
+  </component>
+  <component name="PyConsoleOptionsProvider">
+    <option name="myPythonConsoleState">
+      <console-settings module-name="albaSoTW" is-module-sdk="true">
+        <option name="myUseModuleSdk" value="true" />
+        <option name="myModuleName" value="albaSoTW" />
+      </console-settings>
+    </option>
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -448,96 +351,96 @@
       <recent name="$PROJECT_DIR$/web/segment_of_the_week" />
     </key>
   </component>
-  <component name="RunManager" selected="Python tests.Unittests in web">
-    <configuration default="false" name="Unittests in tests_SegmentOfTheWeek" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/web/segment_of_the_week" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="albaSoTW" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/web/segment_of_the_week/tests_segment_of_the_week.py" />
-      <option name="CLASS_NAME" value="tests_SegmentOfTheWeek" />
-      <option name="METHOD_NAME" value="" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_CLASS" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <option name="PUREUNITTEST" value="true" />
-      <option name="PARAMS" value="" />
-      <option name="USE_PARAM" value="false" />
-      <method />
-    </configuration>
-    <configuration default="false" name="Unittest tests_SegmentOfTheWeek.test__segment_of_the_week__get_all__whenCalledWithMockData__returnsAllSegmentOfTheWeekChallenges" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/web/segment_of_the_week" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="albaSoTW" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/web/segment_of_the_week/tests_segment_of_the_week.py" />
-      <option name="CLASS_NAME" value="tests_SegmentOfTheWeek" />
-      <option name="METHOD_NAME" value="test__segment_of_the_week__get_all__whenCalledWithMockData__returnsAllSegmentOfTheWeekChallenges" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_METHOD" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <option name="PUREUNITTEST" value="true" />
-      <option name="PARAMS" value="" />
-      <option name="USE_PARAM" value="false" />
-      <method />
-    </configuration>
-    <configuration default="false" name="Unittests in tests_Segment" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/web/segment" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="albaSoTW" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/web/segment/tests_segment.py" />
-      <option name="CLASS_NAME" value="tests_Segment" />
-      <option name="METHOD_NAME" value="" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_CLASS" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <option name="PUREUNITTEST" value="true" />
-      <option name="PARAMS" value="" />
-      <option name="USE_PARAM" value="false" />
-      <method />
-    </configuration>
-    <configuration default="false" name="Unittest tests_Segment.test_Segment_whenCalledWithSegmentIdInRedis_returnsSegmentRecordFromRedis" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/web/segment" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="albaSoTW" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/web/segment/tests_segment.py" />
-      <option name="CLASS_NAME" value="tests_Segment" />
-      <option name="METHOD_NAME" value="test_Segment_whenCalledWithSegmentIdInRedis_returnsSegmentRecordFromRedis" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_METHOD" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <option name="PUREUNITTEST" value="true" />
-      <option name="PARAMS" value="" />
-      <option name="USE_PARAM" value="false" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="Python tests.Unittests in web (1)">
     <configuration default="false" name="Unittests in web" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/web" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="albaSoTW" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="$PROJECT_DIR$/web" />
+      <option name="TEST_TYPE" value="TEST_FOLDER" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="PUREUNITTEST" value="true" />
+      <option name="PARAMS" value="" />
+      <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Unittest tests_SegmentOfTheWeek.test__segment_of_the_week__save__whenInitAndSaveWithNewSegmentsAndNoNeutralZonesAsSet__createsDefinedDataInRedis" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/web/segment_of_the_week" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="albaSoTW" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/web/segment_of_the_week/tests_segment_of_the_week.py" />
+      <option name="CLASS_NAME" value="tests_SegmentOfTheWeek" />
+      <option name="METHOD_NAME" value="test__segment_of_the_week__save__whenInitAndSaveWithNewSegmentsAndNoNeutralZonesAsSet__createsDefinedDataInRedis" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_METHOD" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="PUREUNITTEST" value="true" />
+      <option name="PARAMS" value="" />
+      <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Unittest tests_SegmentOfTheWeek.test__segment_of_the_week__save__whenInitAndSaveWithNewSegmentsAndNoNeutralZonesAsList__createsDefinedDataInRedis" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/web/segment_of_the_week" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="albaSoTW" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/web/segment_of_the_week/tests_segment_of_the_week.py" />
+      <option name="CLASS_NAME" value="tests_SegmentOfTheWeek" />
+      <option name="METHOD_NAME" value="test__segment_of_the_week__save__whenInitAndSaveWithNewSegmentsAndNoNeutralZonesAsList__createsDefinedDataInRedis" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_METHOD" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="PUREUNITTEST" value="true" />
+      <option name="PARAMS" value="" />
+      <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Unittest tests_SegmentOfTheWeek.test__segment_of_the_week__save__whenInitAndSaveWithNewNewSegmentsAndDefinedYearOrWeekNumberAndNeutralZonesAsList__createsDefinedDataInRedis" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/web/segment_of_the_week" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="albaSoTW" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/web/segment_of_the_week/tests_segment_of_the_week.py" />
+      <option name="CLASS_NAME" value="tests_SegmentOfTheWeek" />
+      <option name="METHOD_NAME" value="test__segment_of_the_week__save__whenInitAndSaveWithNewNewSegmentsAndDefinedYearOrWeekNumberAndNeutralZonesAsList__createsDefinedDataInRedis" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_METHOD" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="PUREUNITTEST" value="true" />
+      <option name="PARAMS" value="" />
+      <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Unittests in web (1)" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs />
@@ -697,19 +600,19 @@
       <method />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Python tests.Unittests in tests_SegmentOfTheWeek" />
-      <item index="1" class="java.lang.String" itemvalue="Python tests.Unittest tests_SegmentOfTheWeek.test__segment_of_the_week__get_all__whenCalledWithMockData__returnsAllSegmentOfTheWeekChallenges" />
-      <item index="2" class="java.lang.String" itemvalue="Python tests.Unittests in tests_Segment" />
-      <item index="3" class="java.lang.String" itemvalue="Python tests.Unittest tests_Segment.test_Segment_whenCalledWithSegmentIdInRedis_returnsSegmentRecordFromRedis" />
-      <item index="4" class="java.lang.String" itemvalue="Python tests.Unittests in web" />
+      <item index="0" class="java.lang.String" itemvalue="Python tests.Unittests in web" />
+      <item index="1" class="java.lang.String" itemvalue="Python tests.Unittest tests_SegmentOfTheWeek.test__segment_of_the_week__save__whenInitAndSaveWithNewSegmentsAndNoNeutralZonesAsSet__createsDefinedDataInRedis" />
+      <item index="2" class="java.lang.String" itemvalue="Python tests.Unittest tests_SegmentOfTheWeek.test__segment_of_the_week__save__whenInitAndSaveWithNewSegmentsAndNoNeutralZonesAsList__createsDefinedDataInRedis" />
+      <item index="3" class="java.lang.String" itemvalue="Python tests.Unittest tests_SegmentOfTheWeek.test__segment_of_the_week__save__whenInitAndSaveWithNewNewSegmentsAndDefinedYearOrWeekNumberAndNeutralZonesAsList__createsDefinedDataInRedis" />
+      <item index="4" class="java.lang.String" itemvalue="Python tests.Unittests in web (1)" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python tests.Unittests in web" />
-        <item index="1" class="java.lang.String" itemvalue="Python tests.Unittests in tests_SegmentOfTheWeek" />
-        <item index="2" class="java.lang.String" itemvalue="Python tests.Unittest tests_SegmentOfTheWeek.test__segment_of_the_week__get_all__whenCalledWithMockData__returnsAllSegmentOfTheWeekChallenges" />
-        <item index="3" class="java.lang.String" itemvalue="Python tests.Unittests in tests_Segment" />
-        <item index="4" class="java.lang.String" itemvalue="Python tests.Unittest tests_Segment.test_Segment_whenCalledWithSegmentIdInRedis_returnsSegmentRecordFromRedis" />
+        <item index="0" class="java.lang.String" itemvalue="Python tests.Unittests in web (1)" />
+        <item index="1" class="java.lang.String" itemvalue="Python tests.Unittest tests_SegmentOfTheWeek.test__segment_of_the_week__save__whenInitAndSaveWithNewNewSegmentsAndDefinedYearOrWeekNumberAndNeutralZonesAsList__createsDefinedDataInRedis" />
+        <item index="2" class="java.lang.String" itemvalue="Python tests.Unittest tests_SegmentOfTheWeek.test__segment_of_the_week__save__whenInitAndSaveWithNewSegmentsAndNoNeutralZonesAsList__createsDefinedDataInRedis" />
+        <item index="3" class="java.lang.String" itemvalue="Python tests.Unittest tests_SegmentOfTheWeek.test__segment_of_the_week__save__whenInitAndSaveWithNewSegmentsAndNoNeutralZonesAsSet__createsDefinedDataInRedis" />
+        <item index="4" class="java.lang.String" itemvalue="Python tests.Unittests in web" />
       </list>
     </recent_temporary>
   </component>
@@ -730,58 +633,58 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="Unittest_tests_SegmentOfTheWeek_test__segment_of_the_week__get_all__whenCalledWithMockData__returnsAllSegmentOfTheWeekChallenges - 2016.08.22 at 07h 55m 01s.xml">
-      <configuration name="Unittest tests_SegmentOfTheWeek.test__segment_of_the_week__get_all__whenCalledWithMockData__returnsAllSegmentOfTheWeekChallenges" configurationId="tests" />
+    <history-entry file="Unittest_tests_SegmentOfTheWeek_test__segment_of_the_week__save__whenInitAndSaveWithNewNewSegmentsAndDefinedYearOrWeekNumberAndNeutralZonesAsList__createsDefinedDataInRedis - 2016.08.22 at 12h 08m 48s.xml">
+      <configuration name="Unittest tests_SegmentOfTheWeek.test__segment_of_the_week__save__whenInitAndSaveWithNewNewSegmentsAndDefinedYearOrWeekNumberAndNeutralZonesAsList__createsDefinedDataInRedis" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittest_tests_SegmentOfTheWeek_test__segment_of_the_week__get_all__whenCalledWithMockData__returnsAllSegmentOfTheWeekChallenges - 2016.08.22 at 08h 01m 06s.xml">
-      <configuration name="Unittest tests_SegmentOfTheWeek.test__segment_of_the_week__get_all__whenCalledWithMockData__returnsAllSegmentOfTheWeekChallenges" configurationId="tests" />
+    <history-entry file="Unittest_tests_SegmentOfTheWeek_test__segment_of_the_week__save__whenInitAndSaveWithNewNewSegmentsAndDefinedYearOrWeekNumberAndNeutralZonesAsList__createsDefinedDataInRedis - 2016.08.22 at 12h 09m 00s.xml">
+      <configuration name="Unittest tests_SegmentOfTheWeek.test__segment_of_the_week__save__whenInitAndSaveWithNewNewSegmentsAndDefinedYearOrWeekNumberAndNeutralZonesAsList__createsDefinedDataInRedis" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittest_tests_SegmentOfTheWeek_test__segment_of_the_week__get_all__whenCalledWithMockData__returnsAllSegmentOfTheWeekChallenges - 2016.08.22 at 10h 33m 00s.xml">
-      <configuration name="Unittest tests_SegmentOfTheWeek.test__segment_of_the_week__get_all__whenCalledWithMockData__returnsAllSegmentOfTheWeekChallenges" configurationId="tests" />
+    <history-entry file="Unittest_tests_SegmentOfTheWeek_test__segment_of_the_week__save__whenInitAndSaveWithNewNewSegmentsAndDefinedYearOrWeekNumberAndNeutralZonesAsList__createsDefinedDataInRedis - 2016.08.22 at 12h 09m 11s.xml">
+      <configuration name="Unittest tests_SegmentOfTheWeek.test__segment_of_the_week__save__whenInitAndSaveWithNewNewSegmentsAndDefinedYearOrWeekNumberAndNeutralZonesAsList__createsDefinedDataInRedis" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittest_tests_SegmentOfTheWeek_test__segment_of_the_week__get_all__whenCalledWithMockData__returnsAllSegmentOfTheWeekChallenges - 2016.08.22 at 10h 36m 37s.xml">
-      <configuration name="Unittest tests_SegmentOfTheWeek.test__segment_of_the_week__get_all__whenCalledWithMockData__returnsAllSegmentOfTheWeekChallenges" configurationId="tests" />
+    <history-entry file="Unittest_tests_SegmentOfTheWeek_test__segment_of_the_week__save__whenInitAndSaveWithNewSegmentsAndNoNeutralZonesAsList__createsDefinedDataInRedis - 2016.08.22 at 12h 04m 37s.xml">
+      <configuration name="Unittest tests_SegmentOfTheWeek.test__segment_of_the_week__save__whenInitAndSaveWithNewSegmentsAndNoNeutralZonesAsList__createsDefinedDataInRedis" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittest_tests_SegmentOfTheWeek_test__segment_of_the_week__get_all__whenCalledWithMockData__returnsAllSegmentOfTheWeekChallenges - 2016.08.22 at 10h 38m 40s.xml">
-      <configuration name="Unittest tests_SegmentOfTheWeek.test__segment_of_the_week__get_all__whenCalledWithMockData__returnsAllSegmentOfTheWeekChallenges" configurationId="tests" />
+    <history-entry file="Unittest_tests_SegmentOfTheWeek_test__segment_of_the_week__save__whenInitAndSaveWithNewSegmentsAndNoNeutralZonesAsList__createsDefinedDataInRedis - 2016.08.22 at 12h 05m 12s.xml">
+      <configuration name="Unittest tests_SegmentOfTheWeek.test__segment_of_the_week__save__whenInitAndSaveWithNewSegmentsAndNoNeutralZonesAsList__createsDefinedDataInRedis" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittest_tests_SegmentOfTheWeek_test__segment_of_the_week__get_all__whenCalledWithMockData__returnsAllSegmentOfTheWeekChallenges - 2016.08.22 at 10h 41m 38s.xml">
-      <configuration name="Unittest tests_SegmentOfTheWeek.test__segment_of_the_week__get_all__whenCalledWithMockData__returnsAllSegmentOfTheWeekChallenges" configurationId="tests" />
+    <history-entry file="Unittest_tests_SegmentOfTheWeek_test__segment_of_the_week__save__whenInitAndSaveWithNewSegmentsAndNoNeutralZonesAsList__createsDefinedDataInRedis - 2016.08.22 at 12h 05m 58s.xml">
+      <configuration name="Unittest tests_SegmentOfTheWeek.test__segment_of_the_week__save__whenInitAndSaveWithNewSegmentsAndNoNeutralZonesAsList__createsDefinedDataInRedis" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittest_tests_SegmentOfTheWeek_test__segment_of_the_week__get_all__whenCalledWithMockData__returnsAllSegmentOfTheWeekChallenges - 2016.08.22 at 10h 42m 51s.xml">
-      <configuration name="Unittest tests_SegmentOfTheWeek.test__segment_of_the_week__get_all__whenCalledWithMockData__returnsAllSegmentOfTheWeekChallenges" configurationId="tests" />
+    <history-entry file="Unittest_tests_SegmentOfTheWeek_test__segment_of_the_week__save__whenInitAndSaveWithNewSegmentsAndNoNeutralZonesAsList__createsDefinedDataInRedis - 2016.08.22 at 12h 06m 38s.xml">
+      <configuration name="Unittest tests_SegmentOfTheWeek.test__segment_of_the_week__save__whenInitAndSaveWithNewSegmentsAndNoNeutralZonesAsList__createsDefinedDataInRedis" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittest_tests_SegmentOfTheWeek_test__wibble - 2016.08.22 at 07h 54m 58s.xml">
-      <configuration name="Unittest tests_SegmentOfTheWeek.test__wibble" configurationId="tests" />
+    <history-entry file="Unittest_tests_SegmentOfTheWeek_test__segment_of_the_week__save__whenInitAndSaveWithNewSegmentsAndNoNeutralZonesAsList__createsDefinedDataInRedis - 2016.08.22 at 12h 06m 47s.xml">
+      <configuration name="Unittest tests_SegmentOfTheWeek.test__segment_of_the_week__save__whenInitAndSaveWithNewSegmentsAndNoNeutralZonesAsList__createsDefinedDataInRedis" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_tests_SegmentOfTheWeek - 2016.08.22 at 10h 43m 27s.xml">
-      <configuration name="Unittests in tests_SegmentOfTheWeek" configurationId="tests" />
+    <history-entry file="Unittest_tests_SegmentOfTheWeek_test__segment_of_the_week__save__whenInitAndSaveWithNewSegmentsAndNoNeutralZonesAsSet__createsDefinedDataInRedis - 2016.08.22 at 12h 04m 32s.xml">
+      <configuration name="Unittest tests_SegmentOfTheWeek.test__segment_of_the_week__save__whenInitAndSaveWithNewSegmentsAndNoNeutralZonesAsSet__createsDefinedDataInRedis" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_web - 2016.08.22 at 10h 58m 16s.xml">
-      <configuration name="Unittests in web" configurationId="tests" />
+    <history-entry file="Unittests_in_web_(1) - 2016.08.23 at 17h 51m 07s.xml">
+      <configuration name="Unittests in web (1)" configurationId="tests" />
     </history-entry>
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15357143" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30707875" sideWeight="0.22083333" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3110668" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30707875" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3110668" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30707875" sideWeight="0.77916664" order="3" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -826,7 +729,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="449" />
+      <option name="time" value="455" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="tests">
@@ -886,13 +789,6 @@
     <entry file="file://$PROJECT_DIR$/web/src/templates/efforts.html" />
     <entry file="file://$PROJECT_DIR$/web/src/__init__.py" />
     <entry file="file://$PROJECT_DIR$/web/sotw/__init__.py" />
-    <entry file="file://$PROJECT_DIR$/web/requirements.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="64">
-          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/webrequest/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="336">
@@ -915,19 +811,10 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/web/tests/tests_core.py" />
-    <entry file="file://$PROJECT_DIR$/web/storage/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="448">
-          <caret line="40" column="32" selection-start-line="40" selection-start-column="32" selection-end-line="40" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/strava/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="544">
           <caret line="36" column="31" selection-start-line="36" selection-start-column="8" selection-end-line="36" selection-end-column="31" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -935,41 +822,15 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="112">
           <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/core/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2880">
-          <caret line="189" column="0" selection-start-line="189" selection-start-column="0" selection-end-line="189" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/view/templates/efforts_table.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="416">
-          <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/web/core/__init__.py" />
+    <entry file="file://$PROJECT_DIR$/web/view/templates/efforts_table.html" />
     <entry file="file://$PROJECT_DIR$/web/division/tests_division.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="731">
           <caret line="47" column="0" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#15#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/run_server.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -977,7 +838,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="160">
           <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -985,9 +845,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-80">
           <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#31#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1011,17 +868,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-101">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/segment/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="384">
-          <caret line="24" column="34" selection-start-line="24" selection-start-column="34" selection-end-line="24" selection-end-column="34" />
-          <folding>
-            <element signature="e#0#25#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1029,42 +875,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="32">
           <caret line="2" column="52" selection-start-line="2" selection-start-column="52" selection-end-line="2" selection-end-column="52" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/view/templates/efforts.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="164">
-          <caret line="27" column="16" selection-start-line="27" selection-start-column="16" selection-end-line="27" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/view/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="113" column="46" selection-start-line="113" selection-start-column="46" selection-end-line="113" selection-end-column="46" />
-          <folding>
-            <element signature="e#1#85#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/web/segment_of_the_week/tests_segment_of_the_week.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="16">
-          <caret line="118" column="0" selection-start-line="118" selection-start-column="0" selection-end-line="118" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/segment/tests_segment.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="363">
-          <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+        <state relative-caret-position="2640">
+          <caret line="165" column="26" selection-start-line="165" selection-start-column="26" selection-end-line="165" selection-end-column="26" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>
@@ -1073,10 +890,74 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/web/segment_of_the_week/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4832">
-          <caret line="302" column="0" selection-start-line="302" selection-start-column="0" selection-end-line="302" selection-end-column="0" />
+        <state relative-caret-position="1424">
+          <caret line="89" column="0" selection-start-line="89" selection-start-column="0" selection-end-line="103" selection-end-column="32" />
           <folding>
             <element signature="e#0#46#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/view/templates/efforts.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="64">
+          <caret line="4" column="59" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="59" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/run_server.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="32">
+          <caret line="2" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/storage/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/segment/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="15" column="45" selection-start-line="15" selection-start-column="45" selection-end-line="15" selection-end-column="45" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/segment/tests_segment.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="448">
+          <caret line="28" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="3" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/view/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="347">
+          <caret line="246" column="0" selection-start-line="246" selection-start-column="0" selection-end-line="246" selection-end-column="0" />
+          <folding>
+            <element signature="e#1#85#0" expanded="true" />
           </folding>
         </state>
       </provider>

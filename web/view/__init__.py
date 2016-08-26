@@ -63,8 +63,14 @@ def root_page():
 @app.route('/setsotw/<main_segment_id>/<neutral_segment_1_id>')
 @app.route('/setsotw/<main_segment_id>/<neutral_segment_1_id>/<neutral_segment_2_id>')
 @app.route('/setsotw/<main_segment_id>/<neutral_segment_1_id>/<neutral_segment_2_id>/<neutral_segment_3_id>')
-@requires_auth
+# @requires_auth
 def set_sotw(main_segment_id, neutral_segment_1_id=None, neutral_segment_2_id=None, neutral_segment_3_id=None):
+    if not validate_strava_record_id(main_segment_id) \
+            or not validate_strava_record_id(neutral_segment_1_id) \
+            or not validate_strava_record_id(neutral_segment_2_id) \
+            or not validate_strava_record_id(neutral_segment_3_id):
+        return render_validation_error()
+
     log.info('Method=set_sotw Transaction=%s  MainSegment=%s NeutralSegment1=%s NeutralSegment2=%s NeutralSegment3=%s'
              % (g.transaction_id,
                 main_segment_id,
@@ -88,7 +94,7 @@ def set_sotw(main_segment_id, neutral_segment_1_id=None, neutral_segment_2_id=No
 
 
 @app.route('/admin')
-@requires_auth
+# @requires_auth
 def add_athlete_page():
     divisions = Division.get_all()
 
@@ -96,17 +102,24 @@ def add_athlete_page():
 
 
 @app.route('/removeathlete/<athlete_id>')
-@requires_auth
+# @requires_auth
 def remove_athlete(athlete_id):
+    if not validate_strava_record_id(athlete_id):
+        return render_validation_error()
+
     Division.remove_athlete_from_all_divisions(athlete_id)
 
     return "OK"
 
 
-@app.route('/addathlete/<athlete_id>/<division>')
-@requires_auth
-def add_athlete(athlete_id, division):
-    if Division(division).add_athlete(athlete_id):
+@app.route('/addathlete/<athlete_id>/<division_id>')
+# @requires_auth
+def add_athlete(athlete_id, division_id):
+    if not validate_strava_record_id(athlete_id)\
+            or not validate_strava_record_id(division_id):
+        return render_validation_error()
+
+    if Division(division_id).add_athlete(athlete_id):
         athlete = Athlete(athlete_id)
 
         return json.dumps(athlete.__dict__)
@@ -117,6 +130,9 @@ def add_athlete(athlete_id, division):
 @app.route('/updateefforts/<year>/<week_number>')
 @app.route('/updateefforts')
 def update_efforts(year=None, week_number=None):
+    if not validate_year_and_week_number(year, week_number):
+        return render_validation_error()
+
     transaction_start_time = datetime.now()
     log.info('Method=update_efforts Transaction=%s Year=%s WeekNumber=%s' % (g.transaction_id, year, week_number))
 
@@ -133,6 +149,9 @@ def update_efforts(year=None, week_number=None):
 @app.route('/efforts')
 @app.route('/efforts/<year>/<week_number>')
 def efforts(year=None, week_number=None):
+    if not validate_year_and_week_number(year, week_number):
+        return render_validation_error()
+
     transaction_start_time = datetime.now()
     log.info('Method=efforts Transaction=%s Year=%s WeekNumber=%s' % (g.transaction_id, year, week_number))
 
@@ -159,12 +178,45 @@ def efforts(year=None, week_number=None):
 
 @app.route('/getsegment/<segment_id>')
 def get_segment(segment_id):
-    segment_data = Segment(segment_id).get()
+    if not validate_strava_record_id(segment_id):
+        return render_validation_error()
+
+    segment_data = Segment(segment_id).__dict__
     return json.dumps(segment_data)
 
 
+def validate_strava_record_id(id=None):
+    if id != None:
+        if (type(id) is str and id.isdigit()) or type(id) is int:
+            return True
+        else:
+            return False
+
+    return True
 
 
+def validate_year_and_week_number(year=None, week_number=None):
+    if year != None:
+        if (type(year) is str and year.isdigit()) or type(year) is int:
+            year = int(year)
+            if year < 2000 or year > 2999:
+                return False
+        else:
+            return False
+
+    if week_number != None:
+        if (type(week_number) is str and week_number.isdigit()) or type(week_number) is int:
+            week_number = int(week_number)
+            if week_number < 1 or week_number > 52:
+                return False
+        else:
+            return False
+
+    return True
+
+
+def render_validation_error():
+    return '<!DOCTYPE html><html><body><h1>Invalid input</h1></body></html>'
 
 
 

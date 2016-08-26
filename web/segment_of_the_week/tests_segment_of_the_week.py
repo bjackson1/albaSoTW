@@ -170,7 +170,26 @@ class tests_SegmentOfTheWeek(unittest.TestCase):
             self.assertIn(str(neutral_zone_id), stored_neutral_zone_ids)
 
 
-    def test__segment_of_the_week__save__whenInitAndSaveWithNewNewSegmentsAndNoNeutralZones__createsDefinedDataInRedis(self):
+    def test__segment_of_the_week__save__whenInitAndSaveWithNewNewSegmentsAndDefinedYearOrWeekNumberAndNeutralZonesAsList__createsDefinedDataInRedis(self):
+        expected_segment_id = 9201348
+        expected_neutral_zone_ids = [4324242, 92347892]
+        main_segment_key_name = 'sotw_2016_04_segment'
+        neutral_zones_key_name = 'sotw_2016_04_neutral_zones'
+
+        redisclient.delete(main_segment_key_name)
+        redisclient.delete(neutral_zones_key_name)
+
+        sotw = SegmentOfTheWeek(year=2016, week_number=4, main_segment_id=expected_segment_id, neutral_zone_ids=expected_neutral_zone_ids)
+        sotw.save()
+
+        self.assertEqual(int(redisclient.get(main_segment_key_name)), expected_segment_id)
+
+        stored_neutral_zone_ids = redisclient.smembers(neutral_zones_key_name)
+        for neutral_zone_id in expected_neutral_zone_ids:
+            self.assertIn(str(neutral_zone_id), stored_neutral_zone_ids)
+
+
+    def test__segment_of_the_week__save__whenInitAndSaveWithNewSegmentsAndNoNeutralZonesAsSet__createsDefinedDataInRedis(self):
         expected_segment_id = 8940323
         expected_neutral_zone_ids = set()
         main_segment_key_name = 'sotw_2016_04_segment'
@@ -180,6 +199,22 @@ class tests_SegmentOfTheWeek(unittest.TestCase):
         redisclient.delete(neutral_zones_key_name)
 
         sotw = SegmentOfTheWeek(year=2016, week_number=4, main_segment_id=expected_segment_id, neutral_zone_ids=expected_neutral_zone_ids)
+        sotw.save()
+
+        self.assertEqual(int(redisclient.get(main_segment_key_name)), expected_segment_id)
+        self.assertEqual(redisclient.smembers(neutral_zones_key_name), expected_neutral_zone_ids)
+
+
+    def test__segment_of_the_week__save__whenInitAndSaveWithNewSegmentsAndNoNeutralZonesAsList__createsDefinedDataInRedis(self):
+        expected_segment_id = 8940323
+        expected_neutral_zone_ids = set()
+        main_segment_key_name = 'sotw_2016_04_segment'
+        neutral_zones_key_name = 'sotw_2016_04_neutral_zones'
+
+        redisclient.delete(main_segment_key_name)
+        redisclient.delete(neutral_zones_key_name)
+
+        sotw = SegmentOfTheWeek(year=2016, week_number=4, main_segment_id=expected_segment_id, neutral_zone_ids=[])
         sotw.save()
 
         self.assertEqual(int(redisclient.get(main_segment_key_name)), expected_segment_id)

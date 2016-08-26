@@ -111,7 +111,7 @@ class SegmentOfTheWeek:
 
         new_neutral_zone_ids = set()
         if neutral_zone_ids != None:
-            if type(neutral_zone_ids) is set:
+            if type(neutral_zone_ids) is set or type(neutral_zone_ids) is list:
                 for segment_id in neutral_zone_ids:
                     if (type(segment_id) is str and segment_id.isdigit()) or type(segment_id) is int:
                         cast_segment_id = int(segment_id)
